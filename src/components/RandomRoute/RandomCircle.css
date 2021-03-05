@@ -1,0 +1,30 @@
+.loader {
+  position: absolute;
+  max-width: 20px;
+  width: 100%;
+  height: auto;
+  stroke-linecap: round; }
+
+circle {
+  fill: none;
+  stroke-width: 50px;
+  animation-name: preloader;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transform-origin: 170px 170px;
+  will-change: transform; }
+  circle:nth-of-type(1) {
+    stroke-dasharray: 100px; }
+  circle:nth-of-type(1) {
+    animation-delay: -0.15s; }
+  circle:nth-of-type(2) {
+    animation-delay: -0.3s; }
+  circle:nth-of-type(3) {
+    animation-delay: -0.45s; }
+  circle:nth-of-type(4) {
+    animation-delay: -0.6s; }
+
+@keyframes preloader {
+  50% {
+    transform: rotate(360deg); } }
