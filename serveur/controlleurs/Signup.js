@@ -43,7 +43,6 @@ exports.createUsers = (req, res, next) => {
                             if(err) {
                                 return res.json({response: 'Un problème interne est survenue', status: 'error'});
                             } else {
-                              console.log(searchemail);
                                 if(searchemail == null) {
 
                                       var dataUsers =new UserSchema({
@@ -54,7 +53,6 @@ exports.createUsers = (req, res, next) => {
                                         Email: escape(email),
                                         Phone:  phone
                                       });
-                                      console.log(dataUsers.Email);
 
                                       UserSchema.create(dataUsers, function(err, created) {
 

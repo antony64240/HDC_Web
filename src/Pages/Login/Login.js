@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import EmailValidator from 'email-validator';
-import logoAccount from '../../../image/LogoAccount.png';
+import logoAccount from '../../image/LogoAccount.png';
 import './Login.css'
 
 const Login = () => {
 
- 
-  
+
   const [username, Setusername] = useState("");
   const [password, SetPassword] = useState("");
   const [errorMessage, SeterrorMessage] = useState("");
   
+
   const Handlelogin = event => {
     
+
     fetch("http://localhost:3001/api/LoginUser", {           
                                                     method: "POST",                
                                                     body: JSON.stringify({ 
@@ -25,20 +25,26 @@ const Login = () => {
                                                 }) 
                                                 .then(response => response.json()).then(
                                                     (result) => {
-                                                        SeterrorMessage(result['response']);
+                                                        if(result['status']==="success"){
+                                                          console.log("token update");
+                                                          localStorage.setItem('token', result['token']);
+                                                          localStorage.setItem('username',username);
+                                                          localStorage.setItem('connected','true');
+                                                          window.location.href ='/Accueil';
+                                                        }else{
+                                                          localStorage.setItem('connected','false');
+                                                          localStorage.setItem('username','');
+                                                          SeterrorMessage(result['response']);
+                                                        } 
                                                     }
-                                                );
-
-      
+                                                )
   }
 
-  
-
      return (
-      <div className="Login">
+      <div className="Login"  >
         <div className="Login-box">
         
-          <div className='IconeSite'>
+          <div className='IconeSite' id="card" >
             <img src={logoAccount} alt="LogoWA"/>   
           </div>
           <label className='textInput'> Identifiant </label>
@@ -49,10 +55,7 @@ const Login = () => {
             <a href=''><h1> Mot de passe oublié?</h1></a>
             <div className= 'textError'> {errorMessage} </div>
           <div className='Btn'>
-          
-            
               <div className='BtnLogin' onClick={Handlelogin}>Se connecter</div>
-            
             <br/>
             <a href="/signup">
               <div className='BtnRegister'>S'inscrire</div>

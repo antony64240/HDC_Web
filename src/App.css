@@ -18,12 +18,6 @@ legend {
     border: 0
 }
 
-dl,
-ol,
-p,
-ul {
-    margin-bottom: 1rem
-}
 
 label {
   display: block;

@@ -1,46 +1,46 @@
-import jwt from 'jsonwebtoken';
-import Cryptr from 'cryptr';
+const jwt =require('jsonwebtoken');
+const Cryptr =require('cryptr');
 
-export default class ManageToken
+class ManageToken
 {
     createToken(data) {
-        const generate = jwt.sign({data}, __config.jwt.secret);
+        const generate = jwt.sign({data}, "secret");
 
         return generate;
     }
 
     decodeToken(token) {
-        var decoded = jwt.verify(token, __config.jwt.secret);
+        var decoded = jwt.verify(token, "secret");
 
         return decoded;
     }
 
     verifyToken(token) {
         try {
-
-            var decoded = jwt.verify(token, __config.jwt.secret);
-            return decoded;
-
+            var decoded = jwt.verify(token, "secret");
+                if(decoded.data.exp > Date.now()){
+                    return true;
+                }else{
+                    return false;
+                }
           } catch(err) {
-
-            return 'error';
-
+            return 'Token invalid';
           }
     }
 
     cryptToken(token) {
-        const encrypt = new Cryptr(__config.encrypt.secret);
+        const encrypt = new Cryptr("secret");
 
         return encrypt.encrypt(token);
     }
 
     decryptToken(crypted) {
         try {
-            const decrypt = new Cryptr(__config.encrypt.secret);
+            const decrypt = new Cryptr("secret");
 
             return decrypt.decrypt(crypted);
         } catch(err) {
-            return 'error';
+            return "Impossible to decrypte token";
         }
     }
 
@@ -58,3 +58,4 @@ export default class ManageToken
         return t;
     }
 }
+module.exports = ManageToken;

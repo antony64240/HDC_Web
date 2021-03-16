@@ -1,12 +1,9 @@
 .register {
-    position: relative!important;
-    display: flex!important;
+    position: fixed;
     height: 100%!important;
     width: 100%!important;
-    overflow: hidden!important;
     margin : 0;
     padding : 0;
-    z-index: 1!important;
     background-color: #474547;
     background-image: linear-gradient(180deg, #696668 0%, #410f585b 67%);
 }

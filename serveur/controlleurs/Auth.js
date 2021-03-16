@@ -1,13 +1,13 @@
 const Users = require('../routes/models/Users');
 const Escape = require('escape-html');
 const bcrypt = require ('bcrypt');
+const manageToken = require('../middleware/manageToken');
 
 exports.authentification = (req, res, next) =>
 {
     var Username = req.body.username,
         Password = req.body.password;
 
-    console.log(req.body.Password);
 
         if(!Username) {
             return res.json({response: 'Veuillez entrer votre identifiant', status: 'error'});
@@ -19,7 +19,6 @@ exports.authentification = (req, res, next) =>
                     if(err) {
                         return res.json({response: err.message, status: 'error'});
                     } else {
-                        console.log(search);
                         if(search != null) {
                             bcrypt.compare(Password, search.Password, function (err, result) {
 
@@ -29,8 +28,17 @@ exports.authentification = (req, res, next) =>
                                         response: 'Un problème interne est survenue',
                                     });                                   
                                 } else {
-                                    if (result === true) {                                       
-                                        return res.json({response: 'Vous êtes maintenant connecté', status: 'success'});
+                                    if (result === true) { 
+                                        const userData = {
+                                            username:search.UserName,
+                                            email:search.Email,
+                                            phone:search.Phone,
+                                            id:search._id,
+                                            firstName:search.FirstName,
+                                            lastname:search.LastName,
+                                            exp :   Date.now()+900000
+                                        }
+                                        return res.status(301).json({response: 'Vous êtes maintenant connecté', status: 'success', token: new manageToken().generateEncode(userData)});
                                     } else {
                                         return res.json({response: 'Votre mot de passe est incorrect', status: 'error'});
                                     }
