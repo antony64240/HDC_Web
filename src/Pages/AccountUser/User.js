@@ -1,12 +1,13 @@
 import React, {useState,useEffect} from 'react';
-import OngletNouveauProjet from '../../components/Project/Project';
-import OngletProfilUsers from '../../components/profilUsers/profilUsers';
-import ListFolder from '../../components/Folder/ListFolder'
+import OngletNouveauProjet from '../../components/componentsPage/Project/Project';
+import OngletProfilUsers from '../../components/componentsPage/profilUsers/profilUsers';
+import ListFolder from '../../components/componentsPage/Folder/ListFolder'
+import {CircularProgress} from '@material-ui/core';
 const User = () => {
 
    const [isLoadedOngletProject, setisLoadedOngletProject] = useState(false);
    const [isLoadedOngletUser, setisLoadedOngletUser] = useState(true);
-
+   const [loadPage, SetloadPage] = useState(false); 
 
    
 
@@ -21,6 +22,30 @@ const User = () => {
          title : 'Mes Documents'
       }
    ]
+
+   const SendReq = () => {
+      fetch("http://localhost:3001/api/CheckToken", {
+          method: "GET",
+          headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              Token: localStorage.getItem('token')
+          }
+      }).then((result) => {
+            if(result.status!=201){
+               window.location.href ='/Login';
+            }else{
+               if(result.status==201){
+                  SetloadPage(true)
+               }
+            }
+           
+         }
+      );
+  };
+
+   useEffect(() => {
+      SendReq()
+   },1);
 
    const HandleChange = (event) => {
       if(event == "Nouveau Projet"){
@@ -41,36 +66,34 @@ const User = () => {
     }
 
   
-  
-   useEffect(() => {
- 
-  }, []);
+    
+    if(!loadPage){
+      return (<div style={{textAlign:'center', marginTop:'15%'}}><CircularProgress /></div>)
+    }else{
+      return (
+         <div style={baseStyle}> 
+            <div style={barslide}>
+               <ul style={{listStyleType: 'none'}}>
+                  {OngletUsers.map((item, index) => {
+                     return (
+                           <button style={StyleButton} onClick={()=> HandleChange(item.title)} onMouseEnter={changeBackground} onMouseLeave={changeBackgroundback} >
+                           <li key={index} style={Styleli}>
+                              {item.title}
+                           </li>
+                        </button> 
+                     )
+                  })}
+               </ul>
+            </div>
+               <div style={Composent}>
+                  <OngletProfilUsers opacityProfil={isLoadedOngletUser}  />
+                  <OngletNouveauProjet opacityProject={isLoadedOngletProject} />
+               </div>      
+               <ListFolder/>
+      </div>
 
-
-     return (
-      <div style={baseStyle}> 
-         <div style={barslide}>
-            <ul style={{listStyleType: 'none'}}>
-               {OngletUsers.map((item, index) => {
-                  return (
-                        <button style={StyleButton} onClick={()=> HandleChange(item.title)} onMouseEnter={changeBackground} onMouseLeave={changeBackgroundback} >
-                        <li key={index} style={Styleli}>
-                           {item.title}
-                        </li>
-                     </button> 
-                  )
-               })}
-            </ul>
-         </div>
-            <div style={Composent}>
-               <OngletProfilUsers opacityProfil={isLoadedOngletUser} />
-               <OngletNouveauProjet opacityProject={isLoadedOngletProject} />
-            </div>      
-            <ListFolder/>
-   </div>
-
-    );
-  
+      );
+   }
 }
 
 export default User;
@@ -80,6 +103,7 @@ export default User;
    };
 
    const StyleButton ={
+    outline:  'none',
     width:'17rem',
     height:'3rem',
     margin:'1rem',

@@ -2,36 +2,20 @@ export const MenuItems = [
     {
         title: 'ACCUEIL',
         url: "/Accueil",
-        cName: 'nav-links'
+        cName: 'nav-links',
+        classNameli : 'nav-li'
     },
     {
         title: 'SERVICES',
         url: "/Service",
-        cName: 'nav-links'
+        cName: 'nav-links',
+        classNameli : 'nav-li'
     },
     {
-        title: 'SECTEURS D\'ACTIVITÉS',
+        title: 'ACTIVITÉS',
         url: "/SecteurActivite",
-        cName: 'nav-links'
-    },
-    {
-        title: 'NOS RÉALISATIONS',
-        url: "Realisation",
-        cName: 'nav-links'
-
-    },
-    {
-        title: 'CONNEXION',
-        url: "/login",
-        cName: 'nav-links'
-
-    },
-    {
-        title: 'MON COMPTE',
-        url: "/User",
-        cName: 'nav-links'
-
+        cName: 'nav-links',
+        classNameli : 'nav-li'
     }
-
 
 ]

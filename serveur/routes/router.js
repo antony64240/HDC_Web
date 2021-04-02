@@ -3,8 +3,7 @@ const router = express.Router()
 const FileUser = require('../controlleurs/Files');
 const SignUser = require('../controlleurs/Signup');
 const AuthUser = require('../controlleurs/Auth');
-const TokenManagement = require('../controlleurs/Account');
-const { checkToken } = require("../controlleurs/TokenValidation");
+const {checkToken,verifyToken} = require("../controlleurs/TokenValidation");
 
 
 
@@ -19,9 +18,9 @@ router.delete('/DeletUser/:id', SignUser.DeletOneUser);
 
 
 //USERROUTE
-router.get('/Download', FileUser.downloadFiles)
-router.post('/ListFichier', checkToken, FileUser.filesList);
-router.post('/CheckToken', TokenManagement.checkToken);
-router.post('/UploadFile', FileUser.UploadFile);
+router.get('/Download', checkToken, FileUser.downloadFiles)
+router.get('/ListFichier',checkToken, FileUser.filesList);
+router.get('/CheckToken', verifyToken);
+router.post('/UploadFile',checkToken, FileUser.UploadFile);
 
 module.exports = router;

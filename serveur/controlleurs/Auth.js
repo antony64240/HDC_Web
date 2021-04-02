@@ -5,9 +5,10 @@ const manageToken = require('../middleware/manageToken');
 
 exports.authentification = (req, res, next) =>
 {
+    
     var Username = req.body.username,
         Password = req.body.password;
-
+        console.log(Username)
 
         if(!Username) {
             return res.json({response: 'Veuillez entrer votre identifiant', status: 'error'});

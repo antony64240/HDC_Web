@@ -1,78 +1,50 @@
 import React, { Component } from 'react';
-import { MenuItems } from "./MenuItems"
-import { Button } from "./Button"
+import {MenuItems} from './MenuItems'
 import './Navbar.css'
+import Home from '../../image/home.png'
+
+
+
+
 
 class Navbar extends Component {
     
+
+
     
-    constructor(props){
-        super(props);
-        this.state = { clicked: false};  
-      }
-
-    handleClick = () => {
-        this.setState({ clicked: !this.state.clicked})
-    }
-
 
     render() {
-        var  loggedIn = localStorage.getItem('connected');
-        console.log(loggedIn);
-        if(loggedIn=='true'){
+        
+    
+        
                 return( 
-                <header>
-                    <nav className="NavbarItems">
-                        <h1 className="navbar-logo">HdiDesignConcept</h1>       
-                        <div className="menu-icon" onClick={this.handleClick}>
-                            <i className={this.state.clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
-                        </div>
-                        <ul className={this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
-                            {MenuItems.map((item, index) => {
-                                if(item.title != "CONNEXION"){
-                                    console.log("connecté : " +item.title);
+                   <div className='top-bar'>                       
+                       <div className='container'>
+                           <ul className='nav-container'>
+                                {MenuItems.map((item, index) => {
                                     return (
-
-                                        <li key={index}>
+                                        <li key={index} className={item.classNameli}>
                                             <a className={item.cName} href={item.url}>
                                             {item.title}
-                                            </a> 
+                                            </a>    
                                         </li>
                                     )
-                                }
-                            })}
-                        </ul>
-                    </nav>
-                </header>
+                                })}
+                                <li className="nav-li">
+                                            
+                                            <a className="nav-li" href="./user">
+                                                <img style={{width:"50px"}} src={Home}></img>
+                                            </a>    
+                                        </li>
+                           </ul>
+                       </div>
+                   </div>
+                
                 )
                         
-            }
-                return(
-                    <header>
-                    <nav className="NavbarItems">
-                        <h1 className="navbar-logo">HdiDesignConcept</h1>       
-                        <div className="menu-icon" onClick={this.handleClick}>
-                            <i className={this.state.clicked ? 'fas fa-times' : 'fas fa-bars'}></i>
-                        </div>
-                        <ul className={this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
-                            {MenuItems.map((item, index) => {
-                                if(item.title != "MON COMPTE"){
-                                    return (
-                                            <li key={index}>
-                                                <a className={item.cName} href={item.url}>
-                                                {item.title}
-                                                </a>
-                                                
-                                            </li>
-                                        )
-                                    }
-                            })}
-                        </ul>
-                        <Button>< a href="Signup"><span>INSCRIPTION</span> </a></Button>
-                    </nav>
-                    </header>
-                )
-            }
+            
+
+     }
         
 }
 

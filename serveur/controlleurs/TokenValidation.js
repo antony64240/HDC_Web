@@ -3,22 +3,33 @@ const manageToken = require('../middleware/manageToken');
 
 module.exports = {
   checkToken: (req, res, next) => {
-    let token = req.body.token;
+    let content = JSON.parse(req.headers.content)
+    let token = content.token
     if (token) {
         let manager = new manageToken();
         if (manager.verifyToken(manager.decryptToken(token))){
-                next();
+               next()
             } else {
-                return res.json({
-                    success: 0,
-                    message: "Invalid Token..."
-                });
+              return res.status(498).json({message: "Token Invalid"})
             }
     } else {
-      return res.json({
-        success: 0,
-        message: "Access Denied! Unauthorized User"
-      });
+      return res.status(498).json({message: "Access Denied! Unauthorized User"})
+    }
+  },
+  verifyToken: (req, res, next) => {
+    let token = req.headers.token;
+    if (token) {
+        let manager = new manageToken();
+        console.log(manager.verifyToken(manager.decryptToken(token)))
+        if (manager.verifyToken(manager.decryptToken(token))){
+          return res.status(201).json({message: "Token Valid"})
+            } else {
+              return res.status(498).json({message: "Token Invalid"})
+            }
+    } else {
+      
+      return res.status(498).json({message: "Access Denied! Unauthorized User"})
+      
     }
   }
-};
+}

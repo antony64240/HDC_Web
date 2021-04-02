@@ -3,14 +3,14 @@ const File = require('../routes/models/Files')
 var multer = require('multer')
 const testFolder = 'C:/Users/anton/eclipse-workspace/FichierClient';
 var path = require('path');
-var formdata =require('form-data');
-
+const { cpuUsage } = require('process');
 
 
 exports.filesList = (req, res, next) => {
-    console.log(testFolder + "/" + req.body.username + req.body.UrlRequest);
+    let content = JSON.parse(req.headers.content)
+    console.log(testFolder + "/" + content.username + content.UrlRequest);
         var arrayList = [];
-        var dir = testFolder + "/" + req.body.username + req.body.UrlRequest;
+        var dir = testFolder + "/" + content.username + content.UrlRequest;
         fs.readdir(dir, (error, fileNames) => {
             if (error) 
                 throw error;
@@ -28,7 +28,7 @@ exports.filesList = (req, res, next) => {
                 arrayList.push(file);
 
             });
-            res.status(301).json({list: arrayList, status: "success"});
+            res.status(201).json({list: arrayList, status: "success"});
         });
 };
 
