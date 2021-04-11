@@ -21,15 +21,11 @@ class Upload extends Component {
 
 
         for (var x = 0; x < files.length; x++) {
-            console.log(files[x].type);
-            // compare file type find doesn't matach
-            if (types.every(type => files[x].type !== type)) { // create error message and assign to container
+            if (types.every(type => files[x].type !== type)) { 
                 err[x] = files[x].type + ' Le format n\'est pas supporté.\n Format supporté: PNG,JPG,PDF,ZIP';
             }
         };
         for (var z = 0; z < err.length; z++) {
-            // if message not same old that mean has error
-            // discard selected file
             toast.error(err[z])
             event.target.value = null
         }
@@ -82,8 +78,16 @@ class Upload extends Component {
             for (var x = 0; x < this.state.selectedFile.length; x++) {
                 data.append('file', this.state.selectedFile[x]);
             }
-            axios.post("http://localhost:3001/api/UploadFile"+"?CurrentValue="+url+"&username="+localStorage.getItem('username'),
-                data
+            axios.post("http://localhost:3001/api/UploadFile",
+            data
+            ,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': localStorage.getItem('token'),
+                    'currentUrl': url,
+                    'Email':localStorage.getItem('Email')
+                }
+            }
             ,{
                 onUploadProgress: ProgressEvent => {
                     this.setState({
@@ -95,7 +99,8 @@ class Upload extends Component {
                 this.props.data[1](this.props.data[0]+this.state.selectedFile.length);
                 
             }).catch(err => { // then print response status
-                toast.error('upload fail')
+                toast.error('Perte de connexion, vous allez être redirigés.')
+                setTimeout(()=>{ window.location.href ='/Login'; },3000)
             })
         }
     }

@@ -1,7 +1,8 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Bg_SECTION1 from '../../../image/thumb-1920-1056771.jpg';
 import Bg_Overlord from '../../../image/cov.jpg';
+import { useTranslation } from "react-i18next";
 import './section.css';
 
 
@@ -9,6 +10,7 @@ import './section.css';
 
 const Section1 = () => {
 
+    const { t } = useTranslation();
     const [show, doShow] = useState({
         translate:0,
         itemTwo: false,
@@ -22,7 +24,6 @@ const Section1 = () => {
         useLayoutEffect(() => {
             const topPos = element => element.getBoundingClientRect().top;
              const  div2Pos = topPos(secondRef.current),
-                   imgPos = topPos(TranslateRef.current),
                    div3Pos = topPos(ThreeRef.current);
         
             const onScroll = () => {
@@ -47,41 +48,23 @@ const Section1 = () => {
             window.addEventListener("scroll", onScroll);
         
             return () => window.removeEventListener("scroll", onScroll);
-          },[]);
+          },[1]);
 
     return (
         <Wrapper>
             <Div animate={true}>
-                  <div className="section-container">
                     <IMG src={Bg_SECTION1} animate={show.itemThree} ref={ThreeRef} />
-                  </div>
                   <DIV animate={show.itemThree} ref={ThreeRef}>
                     <div className="text-intro">
-                    En effet, riche d’une expérience de plus de 20 ans dans le domaine de 
-                    l’ingénierie électronique, le bureau d’études HDI intervient aussi bien pour de la conception, 
-                    de la programmation, du câblage électronique ou électrotechnique et du routage/CAO.
-                    <br/><br/>
-                    Grâce à des moyens techniques tels que des logiciels de développement de 
-                    CAO électronique et DAO mécanique et électrotechnique, d’équipements de tests et mesures, 
-                    de machines de poses de composants automatiques, machine de poses BGA, de machines de sérigraphies
-                    et des postes de câblages sous binoculaires, HDI garantit la satisfaction de ses clients ainsi que 
-                    la qualité de ses produits.
-                    <br/><br/>
-                    Ecoute et réactivité sont les maîtres-mots de ce bureau d’études qui encouragent les grands comptes 
-                    ainsi que les TPE/PME/PMI à lui renouveler leur confiance, depuis maintenant plus de 10ans.
+                      {t('section1.translated-text')}
                     </div>
                   </DIV >
             </Div>
-                <DIV src animate={show.itemTwo} ref={secondRef}>
-               
-                 
-                    <Img animate={show.translate} src={Bg_Overlord} ref={TranslateRef}>
-                    </Img>
-                
+                <DIV animate={show.itemTwo} ref={secondRef}>
+                    <Img animate={show.translate} src={Bg_Overlord} ref={TranslateRef} />
                 </DIV >
         </Wrapper>
     )
-
 }
 
 
@@ -111,7 +94,7 @@ const IMG = styled.img`
   width: 100%;
   transform: translateX(${({ animate }) => (animate ? "0" : "-100vw")});
   transition: transform 4s;
-  z-index : 1;
+  z-index : -1000;
 `;
 
 const Img = styled.img`

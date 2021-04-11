@@ -1,66 +1,43 @@
-import React from 'react';
-import LogoTel from '../../image/LogoTel.PNG';
-import LogoWhatApp from '../../image/LogoWhatsapp.png';
-import LogoSite from '../../image/logo512.png'
-
-import './footer.css'
-
-
-const bar_footer = () => {
-
-
-    return (<footer className='footer'>
-        <div className='block'>
-            <table align="center" border="0" cellPadding="Z" cellSpacing="0">
-                <tbody>
-                    <tr>
-                        <td className='tdImage'>
-                            <img src={LogoTel}
-                                alt="Logotel"/>
-                        </td>
-                        <td width="5px;">
-                            &nbsp;</td>
-                        <td className='TdContact'>
-                            <div text-align='left'>
-                                "06 60 60 60 60"
-                                <br/>
-                                Du lundi au vendredi de 9h à 20h
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className='tdImage'>
-                            <img src={LogoWhatApp}
-                                alt="LogoWA"/>
-                        </td>
-                        <td width="5px;">
-                            &nbsp;</td>
-                        <td className='TdContact'>
-                            <div text-align='left'>
-                                "06 60 60 60 60"
-                                <br/>
-                                Du lundi au vendredi de 9h à 20h
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div className='block'>
-            <p>
-                La conception sur mesure de vos projets.
-                <br/>Nous maîtrisons l’ensemble du cycle de développement, de la conception à la mise sur le marché, de la carte au produit, selon votre besoin.
-            </p>
-        </div>
-        <div className='block'>
-            <div className='IconeSite'>
-                <img src={LogoSite}
-                    alt="LogoWA"/>
-            </div>
-        </div>
-
-    </footer>)
-
+import React from 'react'
+import Footer from './footerindex'
+import Icon from './styles/Icon'
+export function FooterContainer() {
+    return (
+        <Footer>
+            <Footer.Wrapper>
+            <Footer.Row>
+                <Footer.Column>
+                <Footer.Title>Nous connaîtres !</Footer.Title>
+                    <Footer.Link href="#">Story</Footer.Link>
+                    <Footer.Link href="#">Clients</Footer.Link>
+                    <Footer.Link href="#">Testimonials</Footer.Link>
+                </Footer.Column>
+                <Footer.Column>
+                <Footer.Title>Services</Footer.Title>
+                    <Footer.Link href="#">Marketing</Footer.Link>
+                    <Footer.Link href="#">Consulting</Footer.Link>
+                    <Footer.Link href="#">Development</Footer.Link>
+                    <Footer.Link href="#">Design</Footer.Link>
+                </Footer.Column>
+                <Footer.Column>
+                <Footer.Title>Contact Us</Footer.Title>
+                    <Footer.Link href="#">*******</Footer.Link>
+                    <Footer.Link href="#">********</Footer.Link>
+                    <Footer.Link href="#">*********</Footer.Link>
+                    <Footer.Link href="#">********</Footer.Link>
+                </Footer.Column>
+                <Footer.Column>
+                <Footer.Title>Social</Footer.Title>
+                    <Footer.Link href="#"><Icon className="fab fa-facebook-f" />Facebook</Footer.Link>
+                    <Footer.Link href="#"><Icon className="fab fa-instagram" />Instagram</Footer.Link>
+                    <Footer.Link href="#"><Icon className="fab fa-youtube" />Youtube</Footer.Link>
+                    <Footer.Link href="#"><Icon className="fab fa-twitter" />Twitter</Footer.Link>
+                </Footer.Column>
+            </Footer.Row>
+                <Footer.Copy text={"2020 - 2021 | Copyright | HDI Design Concept, Tous droits réservés."}/>
+                <Footer.Copy text={"Site web Développé par Adam MEZZASALMA."}/>
+            </Footer.Wrapper>
+        </Footer>
+    )
 }
 
-export default bar_footer;

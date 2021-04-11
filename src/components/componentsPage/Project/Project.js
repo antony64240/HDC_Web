@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 
 
 
 const Projects = (props) => {
 
-    const [cityAreacode,setCityAreacode] = useState([]);
 
     const enable = {
         opacity : "1",

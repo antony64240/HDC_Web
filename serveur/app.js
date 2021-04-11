@@ -1,7 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const __Config =require('./config.json');
 const mongoose = require('mongoose');
-var multer = require('multer')
 var cors = require('cors');
 const route = require('./routes/router');
 
@@ -9,7 +8,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect('mongodb+srv://amezzas:5Fk28OTmMSkOKl7I@cluster0.wcjzr.mongodb.net/<dbname>?retryWrites=true&w=majority',
+mongoose.connect(`mongodb+srv://${__Config.Mongoose.login}:${__Config.Mongoose.mdp}@cluster0.wcjzr.mongodb.net/<dbname>?retryWrites=true&w=majority`,
 
 
   { useNewUrlParser: true,
@@ -17,15 +16,16 @@ mongoose.connect('mongodb+srv://amezzas:5Fk28OTmMSkOKl7I@cluster0.wcjzr.mongodb.
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+
 const app = express();
 
-app.use((req, res, next) => {
+  app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
-  app.use(bodyParser.json());
+
   app.use(cors());
 
   

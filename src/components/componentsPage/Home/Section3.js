@@ -1,29 +1,27 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Bg_SECTION1 from '../../../image/i3.jpg';
-import Bg_Overlord from '../../../image/cov.jpg';
 import './section.css';
 import { Button } from 'primereact/button';
+import CustomSlider from "../../Slide/Slide";
+import {useTranslation } from "react-i18next";
 
 
 
 
 const Section3 = () => {
-
+    const { t } = useTranslation();
     const [show, doShow] = useState({
-        translate:0,
         itemTwo: false,
         itemThree: false
       });
 
      const secondRef = useRef(null),
-        ThreeRef = useRef(null),
-        TranslateRef = useRef(null);
+        ThreeRef = useRef(null)
 
         useLayoutEffect(() => {
             const topPos = element => element.getBoundingClientRect().top;
              const  div2Pos = topPos(secondRef.current),
-                   imgPos = topPos(TranslateRef.current),
                    div3Pos = topPos(ThreeRef.current);
         
             const onScroll = () => {
@@ -34,7 +32,6 @@ const Section3 = () => {
                 if (div3Pos+50 < scrollPos) {
                 doShow(state => ({ ...state, itemThree: true }));
               }
-              doShow(state=>({...state, translate:(topPos(TranslateRef.current)/7)}))
             };
            
 
@@ -58,19 +55,13 @@ const Section3 = () => {
                   </div>
                   <DIV animate={show.itemThree} ref={ThreeRef}>
                     <div className="text-intro">
-                    Routage et CAO
-                    A partir d’un schéma “papier” ou réalisé moyennant un logiciel CAO, EEGI vous assure 
-                    le routage de vos cartes et circuits imprimés dans le but d’obtenir un produit fini correspondant à vos attentes.
+                        {t('section3_text1.translated-text')}
                     </div>
                     <Button label="Voir" />
                   </DIV >
             </Div>
-                <DIV src animate={show.itemTwo} ref={secondRef}>
-               
-                 
-                    <Img animate={show.translate} src={Bg_Overlord} ref={TranslateRef}>
-                    </Img>
-                
+                <DIV style={{height:'150px'}} animate={show.itemTwo} ref={secondRef}>
+                  <CustomSlider />
                 </DIV >
         </Wrapper>
     )
@@ -107,13 +98,7 @@ const IMG = styled.img`
   z-index : 1;
 `;
 
-const Img = styled.img`
-  width:100%;
-  height:700px;
-  transform: translateY(${({ animate }) => (-animate)+'px'});
-  transition: transform 1s;
-  margin-top: -80px;
-`;
+
 
 
 const Wrapper = styled.div`

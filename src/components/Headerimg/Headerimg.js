@@ -23,15 +23,15 @@ class Headers extends Component {
     }
 
     increment() {
-        if(this.state.image1==true){
+        if(this.state.image1===true){
             this.setState({image1:false})
             this.setState({image2:true})
         }else{
-            if(this.state.image2==true){
+            if(this.state.image2===true){
                 this.setState({image2:false})
                 this.setState({image3:true})
             }else{
-                if(this.state.image3==true){
+                if(this.state.image3===true){
                     this.setState({image1:true})
                     this.setState({image3:false})
                 }

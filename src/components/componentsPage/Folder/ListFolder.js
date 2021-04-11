@@ -11,7 +11,6 @@ const ListFolder = () => {
     const [isLoaded, setisLoaded] = useState(Boolean);
     const [currentUrl, setcurrentUrl] = useState("");
     const [files, setfiles] = useState([]);
-    const [Counter, setCounter] = useState(Number);
     const [UploadFile, setUploadFile] = useState(Number);
     const [Clicked, setClicked] = useState(Boolean);
 
@@ -20,27 +19,20 @@ const ListFolder = () => {
         setClicked(!Clicked)
     }
 
-    class Files {
-        constructor(name, extension) {
-            this.name = name,
-            this.extension = extension
-        }
-    }
-
+    
     const SendReq = () => {
-        console.log(localStorage.getItem('username'))
-
+  
         fetch("http://localhost:3001/api/ListFichier", {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                content: JSON.stringify(
-                    {UrlRequest: currentUrl, username: localStorage.getItem('username'), token: localStorage.getItem('token')}
-                )
+                "UrlRequest":currentUrl,
+                "Email": localStorage.getItem('Email'),
+                "token":localStorage.getItem('token')
             }
         }).then((response) => {
-            if (response.status != 201) {
-                window.location.href = '/Login';
+            if (response.status !== 201) {
+                
             } else 
                 return response.json();
             
@@ -52,10 +44,18 @@ const ListFolder = () => {
 
 
     const handleClick = (name, extension) => {
-        if (extension == "dossier") {
-            setcurrentUrl(currentUrl + "/" + name);
+
+        if (extension === "dossier") {
+            setcurrentUrl(`${currentUrl} + "/" + ${name}`);
         } else {
-            axios.get("http://localhost:3001/api/Download" + "?CurrentValue=" + currentUrl + "&username=" + localStorage.getItem('username') + "&name=" + name).then((response) => {
+            axios.get("http://localhost:3001/api/Download",{
+                headers: {
+                    email:localStorage.getItem('Email'),
+                    currentUrl: currentUrl,
+                    token:localStorage.getItem('token')
+                }
+            }
+            ).then((response) => {
                 console.log(response.data);
                 console.log(response.status);
                 console.log(response.statusText);
@@ -74,12 +74,12 @@ const ListFolder = () => {
         }
         var string = tab.toString();
         string = string.replaceAll(",", '/');
-        console.log(string);
         setcurrentUrl(string);
     }
 
-    // Permet de mettre à jour ma liste à chaque changemement (Affichage, Upload)
     useEffect(() => {
+        let token = localStorage.getItem('token');
+        console.log("token : " + token)
         SendReq()
     }, [currentUrl, UploadFile]);
 
@@ -88,7 +88,7 @@ const ListFolder = () => {
         return <button onClick={SendReq}>afficher les dossier</button>
     } else {
 
-        var content = files.map((data) => <div className="test"
+        var content = files.map((data,index) => <div key={index} className="test"
             onDoubleClick={
                 () => handleClick(data.name, data.extension)
         }><ProductList data={data}/></div>);
@@ -104,10 +104,10 @@ const ListFolder = () => {
                     animationDuration={0.5}
                 />
             <div className={Clicked ? 'SectionFiles-active' : 'SectionFiles'} >
-           
+      
             <button  className='BtnRetour' onClick={ () => handleRetour()}><span>Retour</span></button>      
                 <div >
-                   
+                
                     <p style={{color:"black"}} id="currentUrl">Dossier courrant : {currentUrl}</p>
                     <div className='containerBoxFile'>
                         {content}

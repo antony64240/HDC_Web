@@ -1,6 +1,6 @@
 .Homecontainer{
-    position: absolute;
-    top : 300px;
+    position: relative;
     width: 100%;
-    margin-top: 30px;
+    margin-top: 10rem;
+    z-index: -10;
 }

@@ -4,7 +4,6 @@ import LogoDossier from '../../../image/dossier.png';
 import LogoPdf from '../../../image/Logopdf.png';
 import LogoJpg from '../../../image/LogoJpg.png';
 import './files.css'
-import { array } from 'prop-types';
 
 const images = [
     {
@@ -27,25 +26,15 @@ const images = [
 
 
 function ProductList(props) {
-    images.sort();
 
     return (
-        <div>
-            {
-            images.map((item) => {
-                if (item.value == props.data.extension) {
-                    return <div className ='boxfile'> <img classnName='logoFiles' src={item.url} style={{width:'4rem'}} ></img><p style={{color:'black',fontSize:'0.7rem',paddingTop:"0px"}}>{props.data.name}</p></div>
+            images.map((item,index) => {
+                if (item.value === props.data.extension) {
+                    return <div className ='boxfile' key={index} > <img alt="LogoFiles" className='logoFiles' src={item.url} style={{width:'4rem'}} ></img><p style={{color:'black',fontSize:'0.7rem',paddingTop:"0px"}}>{props.data.name}</p></div>
                 }
         })
-        }
-        </div>
     )
 }
-
-const textError ={
-
-}
-
 
 
 export default ProductList

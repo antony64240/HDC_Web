@@ -1,79 +1,79 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import loginImg from "../../../image/login.svg";
+import LoginStyle from './style/index_style';
 
-export class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loginParams: {
-                username: "",
-                password: ""
-            }
-        }
-    }
 
-    handleLogin() {
-        console.log(this.state.loginParams.username)
-        
+
+export const Login = (props) => {
+
+
+    const [Email, setEmail] = useState("");
+    const [Password, setPassword] = useState("");
+    const [Message, setMessage] = useState("");
+
+    const handleLogin = () => {       
         fetch("http://localhost:3001/api/LoginUser", {
             method: "POST",
             body: JSON.stringify(
                 {
-                  username: this.state.loginParams.username,
-                  password:this.state.loginParams.password
+                  email: Email,
+                  password: Password
                 }
             ),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        }).then(response => response.json()).then((result) => {
+        })
+        .then(response => response.json())
+        .then((result) => {
             if (result['status'] === "success") {
-                localStorage.setItem('token', result['token']);
-                localStorage.setItem('username', this.state.loginParams.username);
-                localStorage.setItem('connected', 'true');
+                localStorage.setItem('Email',  result.user.email);
+                localStorage.setItem('Phone', result.user.phone);
+                localStorage.setItem('Areacide', result.user.Areacode);
+                localStorage.setItem('City', result.user.city);
+                localStorage.setItem('Compagny', result.user.compagny);
+                localStorage.setItem('Compagny', result.user.compagny);
+                localStorage.setItem('token', result.token);
                 window.location.href ='/User';
             } else {
-                localStorage.setItem('connected', 'false');
-                localStorage.setItem('username', '');
+                localStorage.setItem('connected', false);
+                localStorage.setItem('token', '')
+                localStorage.setItem('Email', '');
+                setMessage(result.response)
             }
         })
     }
 
-    handleFormChange = event => {
-        let loginParamsNew = {
-            ...this.state.loginParams
-        };
-        let val = event.target.value;
-        loginParamsNew[event.target.name] = val;
-        this.setState({loginParams: loginParamsNew});
-    };
-
-    render() {
+    const forgetMdp = () => {
+      props.mdpForget.setState({ismdpForget:true})
+    }
 
         return(
-          <div className="base-container" ref={this.props.containerRef}>
-          <div className="header">Login</div>
-          <div className="content">
-            <div className="image">
-              <img src={loginImg} />
-            </div>
-            <div className="form">
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <input type="text" name="username" onChange={this.handleFormChange} placeholder="username" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" name="password" onChange={this.handleFormChange} placeholder="password" />
-              </div>
-            </div>
-          </div>
-          <div className="footer">
-            <button type="button" className="btn" onClick={this.handleLogin.bind(this)}>
-              Login
-            </button>
-          </div>
-        </div>
+          <LoginStyle>
+          <LoginStyle.Header>Connexion</LoginStyle.Header>
+          <LoginStyle.Content>
+            <LoginStyle.IMGContainer>
+              <LoginStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
+            </LoginStyle.IMGContainer>
+            <LoginStyle.Form>
+              <LoginStyle.FormGroup>
+                <LoginStyle.Label htmlFor="email">Email :</LoginStyle.Label>
+                <LoginStyle.Input type="text" name="email" value={Email} onChange={(event) => {setEmail(event.target.value)}} placeholder="Email" />
+              </LoginStyle.FormGroup>
+              <LoginStyle.FormGroup>
+                <LoginStyle.Label htmlFor="password">Mot de passe :</LoginStyle.Label>
+                <LoginStyle.Input type="password" name="password" value={Password} onChange={(event) => {setPassword(event.target.value)}} placeholder="Mot de passe" />
+              </LoginStyle.FormGroup>
+            </LoginStyle.Form>
+            <LoginStyle.Error>{Message}</LoginStyle.Error>
+          </LoginStyle.Content>
+          <LoginStyle.Footer>
+            <LoginStyle.Btn type="button" onClick={() => handleLogin()}>
+              Connexion
+            </LoginStyle.Btn>
+          </LoginStyle.Footer>
+            <LoginStyle.Href onClick={() => forgetMdp()}> Mdp oublié?</LoginStyle.Href>
+            
+        </LoginStyle>
         );
-    }
 }

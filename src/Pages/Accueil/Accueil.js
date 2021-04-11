@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {useLayoutEffect, useRef, useState } from "react";
 import Section1 from '../../components/componentsPage/Home/Section1';
 import Section2 from '../../components/componentsPage/Home/Section2';
 import styled from "styled-components";
@@ -6,6 +6,9 @@ import './Accueil.css';
 import Bg_circuit from '../../image/bg_circuit.png';
 import Section3 from "../../components/componentsPage/Home/Section3";
 import Header from '../../components/componentsPage/Header/header';
+import {FooterContainer} from "../../components/componentsPage/Footer/Footer";
+import Lang from "../../language/Lang";
+
 
 const Accueil = () => {
   const [show, doShow] = useState({
@@ -16,8 +19,6 @@ const Accueil = () => {
   const firstRef = useRef(null),
     secondRef = useRef(null),
     ThreeRef = useRef(null);
-
-    
 
 
 
@@ -56,25 +57,28 @@ const Accueil = () => {
 
   return (
     <div>
+      
       <Header/>
-      <div className="Homecontainer">
-        
+      <div className="Homecontainer" id="Homecontainer">
+        <Lang />
         <Wrapper>
         <img src={Bg_circuit}
                     style={imgEnable}
                     alt="RouterImg"
                     importances="hight"/>
         <Div animate={show.itemThree} ref={ThreeRef}>
-            <Section1/>
+          <Section1/>
         </Div>
         <Div animate={show.itemTwo} ref={secondRef}>
           <Section2/>      
         </Div>
         <Div animate={show.itemOne} ref={firstRef} >
-            <Section3 />
+          <Section3 />
         </Div>
         </Wrapper>
+        
       </div>
+      <FooterContainer />
       </div>
   );
 };

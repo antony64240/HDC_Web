@@ -31,10 +31,10 @@ const User = () => {
               Token: localStorage.getItem('token')
           }
       }).then((result) => {
-            if(result.status!=201){
+            if(result.status!==201){
                window.location.href ='/Login';
             }else{
-               if(result.status==201){
+               if(result.status===201){
                   SetloadPage(true)
                }
             }
@@ -45,14 +45,14 @@ const User = () => {
 
    useEffect(() => {
       SendReq()
-   },1);
+   },[1]);
 
    const HandleChange = (event) => {
-      if(event == "Nouveau Projet"){
+      if(event === "Nouveau Projet"){
          setisLoadedOngletUser(false);
          setisLoadedOngletProject(true);
       }
-      if(event == "Mon Profils"){
+      if(event === "Mon Profils"){
          setisLoadedOngletUser(true);
          setisLoadedOngletProject(false);
       }
@@ -76,11 +76,13 @@ const User = () => {
                <ul style={{listStyleType: 'none'}}>
                   {OngletUsers.map((item, index) => {
                      return (
+                        <div key={index}>
                            <button style={StyleButton} onClick={()=> HandleChange(item.title)} onMouseEnter={changeBackground} onMouseLeave={changeBackgroundback} >
-                           <li key={index} style={Styleli}>
+                           <li  style={Styleli}>
                               {item.title}
                            </li>
                         </button> 
+                        </div>
                      )
                   })}
                </ul>

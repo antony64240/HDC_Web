@@ -1,5 +1,6 @@
 const http = require('http');
 const app = require('./app');
+const __Config =require('./config.json');
 
 const normalizePort = val => {
   const port = parseInt(val, 10);
@@ -12,7 +13,7 @@ const normalizePort = val => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || '3001');
+const port = normalizePort(__Config.portHttp);
 app.set('port', port);
 
 const errorHandler = error => {

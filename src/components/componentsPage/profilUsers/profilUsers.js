@@ -6,16 +6,10 @@ import { Hint } from 'react-autocomplete-hint';
 
 
 
-
-const regexName = /^[a-z ,.'-]$/i;
 const regNumber=/^[0-9]{1,5}$/;
 const regAreacode=/^[0-9]{5}$/;
 const url="https://geo.api.gouv.fr/communes?codePostal=";
 
-
-const message =[
-
-]
 
 
 
@@ -36,7 +30,7 @@ const ProfilUsers = (props) => {
 
    const [TextErrorFirstname, setTextErrorFirstname] = useState("");
    const [TextErrorLastname, setTextErrorLastname] = useState("");
-   const [TextErrorAddress, setTextErrorAddress] = useState("");
+//    const [TextErrorAddress, setTextErrorAddress] = useState("");
    const [TextErrorEmail, setTextErrorEmail] = useState("");
    const [TextErrorCompagny, setTextErrorCompagny] = useState("");
    const [TextErrorAreacode, setTextErrorAreacode] = useState("");
@@ -48,19 +42,19 @@ const ProfilUsers = (props) => {
 
 
     useEffect(()=>{
-        if(firstname.length!=0){if(firstname.length<3){ setTextErrorFirstname("Votre nom est trop court !")}else{if(firstname.length>12){setTextErrorFirstname("Votre nom est trop long !")}else{setTextErrorFirstname("")}}}else{setTextErrorFirstname("")}
+        if(firstname.length!==0){if(firstname.length<3){ setTextErrorFirstname("Votre nom est trop court !")}else{if(firstname.length>12){setTextErrorFirstname("Votre nom est trop long !")}else{setTextErrorFirstname("")}}}else{setTextErrorFirstname("")}
     },[firstname]);
     
     useEffect(()=>{
-        if(lastname.length!=0){if(lastname.length<3){setTextErrorLastname("Votre prenom est trop court !")}else{if(lastname.length > 12){setTextErrorLastname("Votre orenom est trop long !")}else{setTextErrorLastname("")}}}else{setTextErrorLastname("")}
+        if(lastname.length!==0){if(lastname.length<3){setTextErrorLastname("Votre prenom est trop court !")}else{if(lastname.length > 12){setTextErrorLastname("Votre orenom est trop long !")}else{setTextErrorLastname("")}}}else{setTextErrorLastname("")}
     },[lastname]);
 
     useEffect(()=>{
-        if(email.length!=0){if(!EmailValidator.validate(email)){setTextErrorEmail("l'Email ne peut pas être validé")}else{setTextErrorEmail("")}}else{setTextErrorEmail("")}
+        if(email.length!==0){if(!EmailValidator.validate(email)){setTextErrorEmail("l'Email ne peut pas être validé")}else{setTextErrorEmail("")}}else{setTextErrorEmail("")}
     },[email]);
 
     useEffect(()=>{
-        if(areacode.length==1){if(areacode.match(regNumber)==null){setAreacode(areacode.substr(areacode.length))}}else{if(areacode.match(regNumber)==null){setAreacode(areacode.substr(0,areacode.length-1))}}
+        if(areacode.length===1){if(areacode.match(regNumber)===null){setAreacode(areacode.substr(areacode.length))}}else{if(areacode.match(regNumber)===null){setAreacode(areacode.substr(0,areacode.length-1))}}
         if(areacode.match(regAreacode)){
             fetch(url+areacode,{
                 headers: {Accept: 'application/json'}
@@ -77,7 +71,7 @@ const ProfilUsers = (props) => {
                 }
             )
         }
-        if(areacode.match(regAreacode) == null){
+        if(areacode.match(regAreacode) === null){
             setCityAreacode([])
         }
     },[areacode]);
@@ -91,7 +85,6 @@ const ProfilUsers = (props) => {
             })
             .then(res => res.json())
             .then(
-                
                 (result) => {
                     var tab = []
                     result.features.map((item,i) => tab.push(item.properties.name))
@@ -99,7 +92,7 @@ const ProfilUsers = (props) => {
                     setAddressSearch(tab)
                 },
                 (error) => {
-                    console.log('error')
+                    console.log(error)
                 }
             )
         }

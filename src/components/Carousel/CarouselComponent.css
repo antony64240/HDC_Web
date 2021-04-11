@@ -24,3 +24,10 @@ h1 span span {
     bottom: 0;
     opacity: 1;
     color: #ffffff; } }
+
+.UnderTitle {
+  color: #ffffff; }
+
+.container-title {
+  position: relative;
+  height: 100px; }

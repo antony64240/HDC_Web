@@ -1,13 +1,14 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Span_circuit from '../../../image/ico-know-how.png';
 import Bg_SECTION1 from '../../../image/experience.png';
+import {useTranslation } from "react-i18next";
 
 
 
 
 const Section1 = () => {
-
+    const { t } = useTranslation();
     const [show, doShow] = useState({
 
         itemTwo: false,
@@ -51,7 +52,7 @@ const Section1 = () => {
             <DIV animate={show.itemThree} ref={ThreeRef}>
                 <div className="containerSection2">
                   <div className="titleSection2">
-                    <p>HDI, BUREAU D'ÉTUDES ET DE CONCEPTIONS ÉLECTRONIQUES</p>
+                    <p>{t('section2_title.translated-text')}</p>
                   </div>
                   <div className="divider-center"> 
                     <div className="divider-text-container">
@@ -60,7 +61,7 @@ const Section1 = () => {
                         <span className="divider-border"></span>
                       </span>
                       <span className="divider-border-content">
-                        <img src={Span_circuit}></img>
+                        <img src={Span_circuit} alt="COAImg"></img>
                       </span>
                       <span className="divider-border-right">
                         <span className="divider-border"></span>
@@ -72,13 +73,10 @@ const Section1 = () => {
                     <div className="textSection2">
                       <div className="elementor-row">
                         <div className="text-row">
-                        La société HDI design Concept 
-                         a été créée en 2005 par MEZZASALMA Christian en vue d’apporter sa qualité et
-                          son savoir-faire pour la réalisation de tout type de projets.
-                        HDI a évolué pendant ces 15 ans de service pour s’étendre vers l’international.
+                        {t('section2_text1.translated-text')}
                         </div>
                         <div className="text-row">
-                          Text 2
+                        {t('section2_text2.translated-text')}
                         </div>
                       </div>
                     </div>
@@ -88,8 +86,7 @@ const Section1 = () => {
             <Div animate={true}>
             <DIV style={{backgroundColor:'white'}} animate={show.itemTwo} ref={secondRef}>
                     <div className="text-intro">
-                        JE PLACE ET ROUTE POUR DE GRANDES ENTREPRISES DEPUIS PLUS DE 20 ANS. 
-                        En parallèle je conseille et réalise les cartes pour mes clients depuis plus de 15 ans.
+                    {t('section2_text3.translated-text')}
                     </div>
                   </DIV >
                   
