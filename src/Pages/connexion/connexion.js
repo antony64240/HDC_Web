@@ -8,7 +8,7 @@ class Connexion extends React.Component {
     this.state = {
       isLogginActive: true,
       ismdpForget: false,
-      current : "Register"
+      current : "Inscription"
     };
   }
 
@@ -31,15 +31,15 @@ class Connexion extends React.Component {
 
   render() {
     const { isLogginActive } = this.state;
-    const current = isLogginActive ? "Register" : "Login";
-    const currentActive = isLogginActive ? "login" : "register";
+    const current = isLogginActive ? "Inscription" : "Connexion";
+    const currentActive = isLogginActive ? "Connexion" : "Inscription";
     if(!this.state.ismdpForget){
       return (
         <div className="Connexion">
           <div className="login">
             <div className="container" ref={ref => (this.container = ref)}>
               {isLogginActive && (
-                <Login mdpForget={this} containerRef={ref => (this.current = ref)} />
+                <Login ismdpForget={this} mdpForget={this} containerRef={ref => (this.current = ref)} />
               )}
               {!isLogginActive && (
                 <Register containerRef={ref => (this.current = ref)} />

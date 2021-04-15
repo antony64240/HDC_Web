@@ -1,0 +1,79 @@
+{
+    "common": {
+        "translate-button": "EN",
+        "translated-text": "This is english"
+    },
+    "header_navbar1": {
+        "translate-button": "EN",
+        "translated-text": "Home"
+    },
+    "header_navbar2": {
+        "translate-button": "EN",
+        "translated-text": "Service"
+    },
+    "header_navbar3": {
+        "translate-button": "EN",
+        "translated-text": "Activity"
+    },
+    "header_carousel1":{
+        "translate-button": "EN",
+        "translated-text": "Here for you for over 10 years."
+    },
+    "header_carousel2":{
+        "translate-button": "EN",
+        "translated-text": "Trust us on your projects!"
+    },
+    "section1": {
+        "translate-button": "EN",
+        "translated-text": "With more than 20 years of experience in the field of electronic engineering, the HDI design firm is involved in design, programming, electronic or electrical wiring and routing/CAO. Through technical means such as electronic CAD development software and mechanical and electrical DAO, testing and measurement equipment, automatic component installation machines, BGA installation machine, screen printing machines and binocular wiring stations, HDI guarantees customer satisfaction and product quality. Listening and responsiveness are the watchwords of this design office that encourage large accounts as well as small and medium-sized enterprises (SMEs)PMI to renew their confidence, for more than 10 years now."
+    },
+    "section2_title": {
+        "translate-button": "EN",
+        "translated-text": "HDI, OFFICE & DESIGN OF ELECTRONIC."
+    },
+    "section2_text1": {
+        "translate-button": "EN",
+        "translated-text": "HDI design Concept was founded in 2005 by MEZZASALMA Christian to bring its quality and know-how to the realization of all types of projects. HDI has evolved during these 15 years of service to expand internationally."
+    },
+    "section2_text2": {
+        "translate-button": "EN",
+        "translated-text": "Text anglais."
+    },
+    "section2_text3": {
+        "translate-button": "EN",
+        "translated-text": "I have been setting up and driving for large companies for over 15 years. At the same time I advise and make the cards for my clients for more than 15 years."
+    },
+    "section3_text1": {
+        "translate-button": "EN",
+        "translated-text": "Routing and CAD, Using a \"paper\" scheme or made using CAD software, EEGI ensures you rout your cards and circuit boards in order to obtain a finished product that meets your expectations."
+    },
+    "connexion" : {
+        "translate-button": "EN",
+        "translated-text": "connection"
+    },
+    "register" : {
+        "translate-button": "EN",
+        "translated-text": "Register"
+    },
+    "password :" : {
+        "translate-button": "EN",
+        "translated-text": "Password :"
+    },
+    "forgetMdpText" : {
+        "translate-button": "EN",
+        "translated-text": "Password forgotten?"
+    }
+    ,
+    "Emailforgetpassword" : {
+        "translate-button": "EN",
+        "translated-text": "Enter your email :"
+    },
+    "recover" : {
+        "translate-button": "EN",
+        "translated-text": "Recover"
+    },
+    "back" : {
+        "translate-button": "EN",
+        "translated-text": "Back"
+    }
+}

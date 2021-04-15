@@ -4,6 +4,8 @@ const EmailValidator =require('email-validator');
 const preRegisterSchema = require('../models/PreRegister');
 const Escape = require('escape-html');
 let uuid = require('uuid');
+const  fs  = require('fs');
+const __Config =require('../config.json');
 
 
 exports.createUsers = (req, res, next) => {
@@ -59,6 +61,7 @@ exports.createUsers = (req, res, next) => {
 
 exports.verifyEmail = async (req,res,next) => {
   let token = req.params.token
+  console.log(token)
   preRegisterSchema.findOne({Token:token}, function(err,search) {
     if (search != null){
       let dataUsers = new UserSchema({     
@@ -73,7 +76,14 @@ exports.verifyEmail = async (req,res,next) => {
             if(err){
               return res.json({response: 'Error server', status:'error'});
             }else{
-              return res.json({response: 'Votre compte a bien été validé', status:'success'});
+              fs.mkdir(`${__Config.Folder.path}${search.Email}`,function(e){
+                console.log(e)
+                if(e){
+                  return res.json({response: 'Erreur lors de la création du fichier, contacter le support.', status:'Error'});
+                } else {
+                  return res.json({response: 'Votre compte a bien été validé', status:'success'});
+                }
+                });
             }
           })          
         }

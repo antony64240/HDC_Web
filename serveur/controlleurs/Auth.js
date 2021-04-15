@@ -42,7 +42,7 @@ exports.authentification = async (req, res, next) =>
                                                     Areacode: search.Areacode,
                                                     city: search.City,
                                                     compagny : search.Compagny,
-                                                    tokenExpiration : Date.now()+900000
+                                                    tokenExpiration : Date.now()+3000000
                                                 }
                                                 return res.status(301).json({response: 'Vous êtes maintenant connecté', status: 'success', token: new manageToken().generateEncode(userData) , user: userData});
                                             } else {

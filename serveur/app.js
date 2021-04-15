@@ -3,6 +3,7 @@ const __Config =require('./config.json');
 const mongoose = require('mongoose');
 var cors = require('cors');
 const route = require('./routes/router');
+const path  = require('path')
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
@@ -26,8 +27,10 @@ const app = express();
     next();
   });
 
-  app.use(cors());
 
+
+  app.use(cors());
+  app.use('/', express.static(path.join(__dirname, '../build')));
   
   app.use(express.json()); // for parsing application/json
   app.use(express.urlencoded({ extended: true })); 

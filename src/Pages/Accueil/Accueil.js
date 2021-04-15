@@ -2,12 +2,10 @@ import React, {useLayoutEffect, useRef, useState } from "react";
 import Section1 from '../../components/componentsPage/Home/Section1';
 import Section2 from '../../components/componentsPage/Home/Section2';
 import styled from "styled-components";
-import './Accueil.css';
 import Bg_circuit from '../../image/bg_circuit.png';
 import Section3 from "../../components/componentsPage/Home/Section3";
 import Header from '../../components/componentsPage/Header/header';
 import {FooterContainer} from "../../components/componentsPage/Footer/Footer";
-import Lang from "../../language/Lang";
 
 
 const Accueil = () => {
@@ -56,30 +54,25 @@ const Accueil = () => {
   },[]);
 
   return (
-    <div>
-      
+    <React.Fragment> 
       <Header/>
-      <div className="Homecontainer" id="Homecontainer">
-        <Lang />
-        <Wrapper>
-        <img src={Bg_circuit}
-                    style={imgEnable}
-                    alt="RouterImg"
-                    importances="hight"/>
-        <Div animate={show.itemThree} ref={ThreeRef}>
-          <Section1/>
-        </Div>
-        <Div animate={show.itemTwo} ref={secondRef}>
-          <Section2/>      
-        </Div>
-        <Div animate={show.itemOne} ref={firstRef} >
-          <Section3 />
-        </Div>
+        <Wrapper id='Homecontainer'>
+          <img src={Bg_circuit}
+                      style={imgEnable}
+                      alt="RouterImg"
+                      importances="hight"/>
+          <Div animate={show.itemThree} ref={ThreeRef}>
+            <Section1/>
+          </Div>
+          <Div animate={show.itemTwo} ref={secondRef}>
+            <Section2/>      
+          </Div>
+          <Div animate={show.itemOne} ref={firstRef} >
+            <Section3 />
+          </Div>
         </Wrapper>
-        
-      </div>
       <FooterContainer />
-      </div>
+    </React.Fragment>
   );
 };
 
@@ -93,8 +86,8 @@ const Div = styled.div`
 `;
 
 const Wrapper = styled.div`
-
-
+  z-index:-10;
+  margin-top:20px;
 `;
 
 

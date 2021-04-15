@@ -5,7 +5,6 @@ export const BaseContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
 `;
 
 export const Header = styled.div`
@@ -54,7 +53,7 @@ export const ImgLogin = styled.img`
     height: 100%;
 `;
 
-export const Form = styled.div`
+export const Form = styled.form`
     margin-top: 2em;
     display: flex;
     flex-direction: column;

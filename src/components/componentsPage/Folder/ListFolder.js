@@ -1,38 +1,45 @@
 import React, {useState, useEffect} from 'react';
 import ProductList from './ProductList';
-import './files.css'
+import './files.css';
 import Upload from './Upload';
 import axios from 'axios';
 import {HamburgerButton} from '../../Hamburger/HamburgerButton';
+import { CONFIG }  from '../../enum-list/enum-list';
+import { CircularProgress } from '@material-ui/core';
+import styled from 'styled-components';
 
 
 const ListFolder = () => {
 
     const [isLoaded, setisLoaded] = useState(Boolean);
-    const [currentUrl, setcurrentUrl] = useState("");
-    const [files, setfiles] = useState([]);
+    const [currentUrl, setcurrentUrl] = useState(String);
+    const [files, setfiles] = useState();
     const [UploadFile, setUploadFile] = useState(Number);
     const [Clicked, setClicked] = useState(Boolean);
 
+    const DIV = styled.div`
+        position : fixed;
+        right : 30px;
+        text-align: center;
+        top:7rem;
+    `;
 
     const ChangeStyle = () => {
         setClicked(!Clicked)
     }
 
     
-    const SendReq = () => {
-  
-        fetch("http://localhost:3001/api/ListFichier", {
+    const SendReq = async () => {
+        fetch(`${CONFIG.URLAPI}ListFichier`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "UrlRequest":currentUrl,
+                "UrlRequest": currentUrl,
                 "Email": localStorage.getItem('Email'),
                 "token":localStorage.getItem('token')
             }
         }).then((response) => {
             if (response.status !== 201) {
-                
             } else 
                 return response.json();
             
@@ -44,11 +51,10 @@ const ListFolder = () => {
 
 
     const handleClick = (name, extension) => {
-
         if (extension === "dossier") {
-            setcurrentUrl(`${currentUrl} + "/" + ${name}`);
+            setcurrentUrl(`${currentUrl}/${name}`);
         } else {
-            axios.get("http://localhost:3001/api/Download",{
+            axios.get(`${CONFIG.URLAPI}Download`,{
                 headers: {
                     email:localStorage.getItem('Email'),
                     currentUrl: currentUrl,
@@ -78,14 +84,12 @@ const ListFolder = () => {
     }
 
     useEffect(() => {
-        let token = localStorage.getItem('token');
-        console.log("token : " + token)
         SendReq()
     }, [currentUrl, UploadFile]);
 
 
     if (!isLoaded) {
-        return <button onClick={SendReq}>afficher les dossier</button>
+        return  <DIV><CircularProgress/></DIV>
     } else {
 
         var content = files.map((data,index) => <div key={index} className="test"
@@ -107,13 +111,11 @@ const ListFolder = () => {
       
             <button  className='BtnRetour' onClick={ () => handleRetour()}><span>Retour</span></button>      
                 <div >
-                
-                    <p style={{color:"black"}} id="currentUrl">Dossier courrant : {currentUrl}</p>
                     <div className='containerBoxFile'>
                         {content}
                     </div>
                 </div>
-            <Upload data={[UploadFile,setUploadFile]}/>
+            <Upload currentUrl={currentUrl} Data={setUploadFile} DataLenght={UploadFile}/>
             </div>
             </div>
         );

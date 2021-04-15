@@ -3,6 +3,7 @@ import OngletNouveauProjet from '../../components/componentsPage/Project/Project
 import OngletProfilUsers from '../../components/componentsPage/profilUsers/profilUsers';
 import ListFolder from '../../components/componentsPage/Folder/ListFolder'
 import {CircularProgress} from '@material-ui/core';
+import { CONFIG } from '../../components/enum-list/enum-list'
 const User = () => {
 
    const [isLoadedOngletProject, setisLoadedOngletProject] = useState(false);
@@ -24,7 +25,8 @@ const User = () => {
    ]
 
    const SendReq = () => {
-      fetch("http://localhost:3001/api/CheckToken", {
+      if(localStorage.getItem("Email")!= null){
+      fetch(`${CONFIG.URLAPI}CheckToken`, {
           method: "GET",
           headers: {
               "Content-type": "application/json; charset=UTF-8",
@@ -32,7 +34,7 @@ const User = () => {
           }
       }).then((result) => {
             if(result.status!==201){
-               window.location.href ='/Login';
+               window.location.href ='#/Login';
             }else{
                if(result.status===201){
                   SetloadPage(true)
@@ -41,6 +43,9 @@ const User = () => {
            
          }
       );
+      }else{
+         window.location.href ='#/Login';
+      }
   };
 
    useEffect(() => {

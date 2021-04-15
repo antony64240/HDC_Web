@@ -1,14 +1,9 @@
-export enum StateTypes {
-    NOT_SET = '',
-    WHITE = 'white',
-    GREY = 'grey',
-    PRIMARY = 'primary',
-    SECONDARY = 'secondary',
-    SUCCESS = 'success',
-    DANGER = 'danger',
-    WARNING = 'warning',
-    TRANSPARENT = 'transparent',
-    CANCEL = 'cancel',
-    ERROR = 'error',
-    LOADING = 'loading',
+// export enum CONFIG {
+//     URLAPI = 'http://86.234.214.142:3001/api/'
+// }
+
+
+
+export enum CONFIG {
+    URLAPI = 'http://localhost:3001/api/'
 }

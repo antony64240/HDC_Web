@@ -24,6 +24,6 @@ router.delete('/DeletUser/:id', SignUser.DeletOneUser);
 router.get('/Download', checkToken, FileUser.downloadFiles)
 router.get('/ListFichier',checkToken, FileUser.filesList);
 router.get('/CheckToken',verifyToken);
-router.post('/UploadFile', checkToken, FileUser.UploadFile);
+router.post('/UploadFile', FileUser.UploadFile);
 
 module.exports = router;

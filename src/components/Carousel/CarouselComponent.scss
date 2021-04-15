@@ -41,4 +41,7 @@ h1 {
   .container-title{
     position: relative;
     height: 100px;
+    z-index: 1000;
+    width: 50%;
+    top:20px
   }

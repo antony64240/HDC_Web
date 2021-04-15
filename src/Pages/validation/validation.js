@@ -1,28 +1,27 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { CONFIG }  from '../../components/enum-list/enum-list';
+import gifImg from '../../image/checkmark.gif';
+import styled from 'styled-components';
+
+const IMG = styled.img`
+
+`;
+
+const DIV = styled.div`
+margin-top:10%;
+text-align: center;
+font-size:20px;
+width:100%;
+`;
 
 
-class VerifyEmail extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            message: "En cours de validation"
-        }       
-    }
-
-
-    componentDidMount(){
-        this.requestValidation()
-    }
+const VerifyEmail = () => {
+    const [message, setMessage] = useState(Boolean);
     
-    getQueryStringValue (key) {  
-        return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
-    }  
 
-
-    requestValidation(){
-        const token = this.getQueryStringValue("token"); 
-        console.log(token)
-        fetch(`http://localhost:3001/api/verifyEmail/${token}`, {
+    const requestValidation = () =>{
+        const token = getQueryStringValue("token");
+        fetch(`${CONFIG.URLAPI}verifyEmail/${token}`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -30,23 +29,31 @@ class VerifyEmail extends React.Component {
         }).then(response => response.json())
         .then((result) => {
              if (result['status'] === "success"){
-                console.log("success")
-                this.setState({message:result.response})
-                setTimeout(()=>{ window.location.href ='/Login'; },3000)
+                setMessage(<IMG src={gifImg}></IMG>);
+                setTimeout(()=>{ setMessage(result.response);},1600);
+                setTimeout(()=>{ window.location.href ='#/Login'; },3000);
                
             }else{
-                this.setState({message:result.response})
-                setTimeout(()=>{ window.location.href ='/Login'; },3000)
+                setMessage(result.response);
+                setTimeout(()=>{ window.location.href ='#/Login'; },3000);
             } 
         })
     }
-    render() {
+
+    const getQueryStringValue =  (key) => {  
+        return decodeURIComponent(window.location.hash.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*+\#]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+    }  
+
+    useEffect(()=>{
+        requestValidation();
+    },[1])
+
         return(
-            <div>
-                {this.state.message}
-            </div>
+            <DIV>
+                {message}
+            </DIV>
         )
-    }
+    
 }
 
 export default VerifyEmail

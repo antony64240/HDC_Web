@@ -1,4 +1,8 @@
 {
+  "route":{
+    "dev":"http://localhost:3001/",
+    "prod":"http://86.234.214.142:3001/"
+  },
   "Folder":{
     "path":"C:/Users/anton/eclipse-workspace/FichierClient/"
   },

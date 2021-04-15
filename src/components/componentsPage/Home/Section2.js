@@ -84,11 +84,11 @@ const Section1 = () => {
                 </div>
             </DIV>
             <Div animate={true}>
-            <DIV style={{backgroundColor:'white'}} animate={show.itemTwo} ref={secondRef}>
+            <TEXT animate={show.itemTwo} ref={secondRef}>
                     <div className="text-intro">
                     {t('section2_text3.translated-text')}
                     </div>
-                  </DIV >
+                  </TEXT >
                   
                   <div className="section-container">
                     <IMG style={{width:'390px'}} src={Bg_SECTION1} animate={show.itemTwo} ref={secondRef} />
@@ -116,6 +116,13 @@ const Div = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin-bottom:30px;
+`;
+
+const TEXT = styled.div`
+  height: 450px;
+  width: 100%;
+  transform: translateX(${({ animate }) => (animate ? "0" : "-100vw")});
+  transition: transform 2s;
 `;
 
 

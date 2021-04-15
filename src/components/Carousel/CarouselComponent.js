@@ -11,11 +11,9 @@ const Carousel = makeCarousel(CarouselUI);
 
 const Container = styled.div`
   position: relative;
-  width: 500px;
-  left:8vh
+  left:8vh;
+  z-index:1000;
 `;
-
-
 
 const  CarouselComponent = () => {
   const [show, doShow] = useState(Boolean)
@@ -26,13 +24,12 @@ const  CarouselComponent = () => {
     window.addEventListener("scroll", () =>{
        let a =  document.getElementById('container')
        let posNavbY = a.getBoundingClientRect().top;
-       console.log(posNavbY)
       if(posNavbY<-33){
         doShow(true)
       }else{
         doShow(false)
       }
-      if(posNavbY<-200){
+      if(posNavbY<-227){
         doShow2(true)
       }else{
         doShow2(false)

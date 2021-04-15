@@ -1,6 +1,8 @@
 import React from "react";
 import loginImg from "../../../image/login.svg";
 import RegisterStyle from './style/index_style';
+import { CONFIG }  from '../../enum-list/enum-list';
+import { CircularProgress } from '@material-ui/core';
 
 export class Register extends React.Component {
     constructor(props) {
@@ -11,13 +13,36 @@ export class Register extends React.Component {
                 password: "",
                 password1: ""
             },
-            errorMessage:""
+            errorMessage:"",
+            eventListener: "",
+            timer : true
         }
+        
+    }
+
+    enterpush = (e)  => {
+      if (e.key === 'Enter') {
+        if(this.state.timer == true){
+          console.log(this.timer)
+          this.handleRegister()
+          this.setState({timer:false})
+          setTimeout(() => this.setState({timer:true}),1000)
+        }
+      }
+    }
+
+    componentDidMount =() =>{
+      document.addEventListener('keypress', this.enterpush);
+    }
+
+    componentWillUnmount =() =>{
+      document.removeEventListener('keypress', this.enterpush);
     }
 
 
     handleRegister = () => {
-      fetch("http://localhost:3001/api/AddUser", {
+      this.setState({errorMessage:<CircularProgress/>})
+      fetch(`${CONFIG.URLAPI}AddUser`, {
           method: "POST",
           body: JSON.stringify(
             {
@@ -29,16 +54,16 @@ export class Register extends React.Component {
               "Content-type": "application/json; charset=UTF-8"
           }
       }).then(response => response.json()).then((result) => {
-        console.log(result)
           if (result['status'] === "success") {
-            console.log("here")
-            window.location.href = '/Login';
+            this.setState({errorMessage:result.response + " Veuillez valider votre email !"})
+            setInterval(() => { window.location.href = '#/Login'},2000);
           } else { 
-            console.log("here")
             this.setState({errorMessage:result.response})
           }
       })
     }
+
+    
 
     handleFormChange = event => {
       let loginParamsNew = {
@@ -52,13 +77,13 @@ export class Register extends React.Component {
 
     render() {
         return(
-          <RegisterStyle ref={this.props.containerRef}>
+          <RegisterStyle>
           <RegisterStyle.Header>Inscription</RegisterStyle.Header>
           <RegisterStyle.Content>
           <RegisterStyle.IMGContainer>
               <RegisterStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
           </RegisterStyle.IMGContainer>
-            <RegisterStyle.Form>
+            <RegisterStyle.Form onSubmit = {this.handleRegister}>
             <RegisterStyle.FormGroup>
                 <RegisterStyle.Label htmlFor="email">Email</RegisterStyle.Label>
                 <RegisterStyle.Input type="text" name="email" onChange={this.handleFormChange} placeholder="email" />
@@ -75,8 +100,8 @@ export class Register extends React.Component {
             <RegisterStyle.Error>{this.state.errorMessage}</RegisterStyle.Error>
           </RegisterStyle.Content>
           <RegisterStyle.Footer className="footer">
-            <RegisterStyle.Btn type="button" className="btn" onClick={this.handleRegister}>
-              Inscription
+            <RegisterStyle.Btn  className="btn" onClick={this.handleRegister}>
+            Inscription
             </RegisterStyle.Btn>
           </RegisterStyle.Footer>
         </RegisterStyle>

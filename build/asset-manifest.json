@@ -1,0 +1,39 @@
+{
+  "files": {
+    "main.css": "./static/css/main.9f56e5f2.chunk.css",
+    "main.js": "./static/js/main.917bdf86.chunk.js",
+    "main.js.map": "./static/js/main.917bdf86.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.5d8a7c09.js",
+    "runtime-main.js.map": "./static/js/runtime-main.5d8a7c09.js.map",
+    "static/css/2.1c172b86.chunk.css": "./static/css/2.1c172b86.chunk.css",
+    "static/js/2.f8697e5e.chunk.js": "./static/js/2.f8697e5e.chunk.js",
+    "static/js/2.f8697e5e.chunk.js.map": "./static/js/2.f8697e5e.chunk.js.map",
+    "index.html": "./index.html",
+    "static/css/2.1c172b86.chunk.css.map": "./static/css/2.1c172b86.chunk.css.map",
+    "static/css/main.9f56e5f2.chunk.css.map": "./static/css/main.9f56e5f2.chunk.css.map",
+    "static/js/2.f8697e5e.chunk.js.LICENSE.txt": "./static/js/2.f8697e5e.chunk.js.LICENSE.txt",
+    "static/media/Airbus.b65803f4.png": "./static/media/Airbus.b65803f4.png",
+    "static/media/HD wallpaper_ pc  hd 1080p nature  1920x1080.4290c846.jfif": "./static/media/HD wallpaper_ pc  hd 1080p nature  1920x1080.4290c846.jfif",
+    "static/media/LogoJpg.250fe5f1.png": "./static/media/LogoJpg.250fe5f1.png",
+    "static/media/Logopdf.23173164.png": "./static/media/Logopdf.23173164.png",
+    "static/media/background1.3c3cdb8a.jpg": "./static/media/background1.3c3cdb8a.jpg",
+    "static/media/bg_circuit.10c84c38.png": "./static/media/bg_circuit.10c84c38.png",
+    "static/media/checkmark.84e2ea08.gif": "./static/media/checkmark.84e2ea08.gif",
+    "static/media/cool-nature-backgrounds-2.ff9ef3d7.jpg": "./static/media/cool-nature-backgrounds-2.ff9ef3d7.jpg",
+    "static/media/cov.7b751071.jpg": "./static/media/cov.7b751071.jpg",
+    "static/media/dossier.f2758838.png": "./static/media/dossier.f2758838.png",
+    "static/media/experience.55617b7c.png": "./static/media/experience.55617b7c.png",
+    "static/media/home.11779962.png": "./static/media/home.11779962.png",
+    "static/media/i3.240ace8c.jpg": "./static/media/i3.240ace8c.jpg",
+    "static/media/login.103b30a1.svg": "./static/media/login.103b30a1.svg",
+    "static/media/thumb-1920-1056771.cecaeed6.jpg": "./static/media/thumb-1920-1056771.cecaeed6.jpg",
+    "static/media/zip.2b5c3fe0.png": "./static/media/zip.2b5c3fe0.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5d8a7c09.js",
+    "static/css/2.1c172b86.chunk.css",
+    "static/js/2.f8697e5e.chunk.js",
+    "static/css/main.9f56e5f2.chunk.css",
+    "static/js/main.917bdf86.chunk.js"
+  ]
+}

@@ -1,22 +1,27 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Progress} from 'reactstrap';
-import {ToastContainer, toast} from 'react-toastify';
+import { CONFIG }  from '../../enum-list/enum-list';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Upload.css';
+import { Progress } from 'antd';
+import 'antd/dist/antd.css';
 
 
-class Upload extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedFile: null,
-            loaded: 0
-        }
-    }
-    checkMimeType = (event) => { // getting file object
-        let files = event.target.files
-        let err = []
+const  Upload  = (props) => {
+
+    let currentUrl = props.currentUrl;
+    let setData = props.Data;
+    let UploadFile =props.DataLenght;
+
+
+    const [selectedFile, setselectedFile] = useState();
+    const [loaded, setloaded] = useState(Number);
+
+
+    const checkMimeType = (event) => { // getting file object
+        let files = event.target.files;
+        let err = [];
         const types = ['image/png', 'image/jpeg', 'image/gif', 'application/pdf','application/x-zip-compressed','application/x-gzip']
 
 
@@ -26,12 +31,12 @@ class Upload extends Component {
             }
         };
         for (var z = 0; z < err.length; z++) {
-            toast.error(err[z])
-            event.target.value = null
+            toast.error(err[z]);
+            event.target.value = null;
         }
         return true;
     }
-    maxSelectFile = (event) => {
+    const maxSelectFile = (event) => {
         let files = event.target.files
             if (files.length > 5) {
                 const msg = 'Juste 5 fichier peuvent être upload en même temps !'
@@ -41,19 +46,17 @@ class Upload extends Component {
             }
         return true;
     }
-    checkFileSize = (event) => {
-        let files = event.target.files
-        let size = 20000000
+    const checkFileSize = (event) => {
+        let files = event.target.files;
+        let size = 20000000;
         let err = [];
 
             for (var x = 0; x < files.length; x++) {
                 if (files[x].size > size) {
-                    err[x] = files[x].type + 'Le fichier est trop large, chosissez-en un plus petit s\'il vous plaît\n';
+                    err[x] = files[x].type + `Le fichier est trop large, chosissez-en un plus petit s'il vous plaît`;
                 }
             };
             for (var z = 0; z < err.length; z++) {
-                // if message not same old that mean has error
-                // discard selected file
                 toast.error(err[z])
                 event.target.value = null
             }
@@ -61,67 +64,67 @@ class Upload extends Component {
         
     }
 
-    onChangeHandler = event => {
+    const onChangeHandler = event => {
         var files = event.target.files
-        if (this.maxSelectFile(event) && this.checkMimeType(event) && this.checkFileSize(event)) { // if return true allow to setState
-            this.setState({selectedFile: files, loaded: 0})
+        if (maxSelectFile(event) && checkMimeType(event) && checkFileSize(event)) { // if return true allow to setState
+            setselectedFile(files)
         }
+        event.target.files = null;
     }
-    onClickHandler = () => {
-        var url = document.getElementById("currentUrl").textContent;
-        url = url.substr(19);
+
+    useEffect(()=>{
+        console.log(loaded)
+    },[loaded])
+
+    const onClickHandler = () => {
         const data = new FormData();
-        if(this.state.selectedFile==null){
+        if(selectedFile==null){
             const msg = 'Aucun fichier sélectionné.'
             toast.warn(msg)
         }else{
-            for (var x = 0; x < this.state.selectedFile.length; x++) {
-                data.append('file', this.state.selectedFile[x]);
+            for (var x = 0; x < selectedFile.length; x++) {
+                data.append('file', selectedFile[x]);
             }
-            axios.post("http://localhost:3001/api/UploadFile",
+            axios.post(`${CONFIG.URLAPI}UploadFile?url=Currenturl=${currentUrl}?user=${localStorage.getItem("Email")}?token=${localStorage.getItem("token")}`,
             data
             ,{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'token': localStorage.getItem('token'),
-                    'currentUrl': url,
-                    'Email':localStorage.getItem('Email')
-                }
-            }
-            ,{
                 onUploadProgress: ProgressEvent => {
-                    this.setState({
-                        loaded: (ProgressEvent.loaded / ProgressEvent.total * 100)
-                    })
+                    setloaded(ProgressEvent.loaded / ProgressEvent.total * 100)                
                 }
-            }).then(res => { // then print response status
+            })
+            .then(res => {
                 toast.success('upload success');
-                this.props.data[1](this.props.data[0]+this.state.selectedFile.length);
+                setData(UploadFile+selectedFile.length)
                 
-            }).catch(err => { // then print response status
+            }).catch(err => {
+                console.log(err)
                 toast.error('Perte de connexion, vous allez être redirigés.')
-                setTimeout(()=>{ window.location.href ='/Login'; },3000)
             })
         }
     }
 
-    render() {
-       
-        
         return( 
             <div style={{position:'fixed',bottom:'200px'}}> 
               <div >
                 <label>Upload Your File </label>
-                <input type="file"  multiple onChange={this.onChangeHandler}/>
+                <input type="file"  multiple onChange={onChangeHandler}/>
               </div>  
               <div >
               <ToastContainer />
-              <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
+              <div style={{display:"block"}}>
+                <Progress
+                        type="circle"
+                        strokeColor={{
+                            '0%': '#108ee9',
+                            '100%': '#87d068',
+                        }}
+                        percent={loaded.toFixed(2)}
+                    />
+                </div>
               </div> 
-              <button type="button"  onClick={this.onClickHandler}>Upload</button>
+              <button type="button"  onClick={onClickHandler}>Upload</button>
             </div>
       );
-    }
 }
 
 export default Upload;

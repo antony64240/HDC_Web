@@ -3,6 +3,7 @@ import loginImg from "../../../image/login.svg";
 import LoginStyle from './style/index_style';
 import EmailValidator from 'email-validator';
 import {CircularProgress} from '@material-ui/core';
+import { CONFIG }  from '../../enum-list/enum-list';
 
 
 export const ForgetPassword = (props) => {
@@ -14,7 +15,7 @@ export const ForgetPassword = (props) => {
     const handleLogin = () => {     
       if(EmailValidator.validate(Email)){
       setMessage(<CircularProgress />) 
-        fetch("http://localhost:3001/api/ForgotPassword", {
+        fetch(`${CONFIG.URLAPI}ForgotPassword`, {
             method: "POST",
             body: JSON.stringify(
                 {
@@ -45,7 +46,7 @@ export const ForgetPassword = (props) => {
             <LoginStyle.IMGContainer>
               <LoginStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
             </LoginStyle.IMGContainer>
-            <LoginStyle.Form>
+            <LoginStyle.Form action={() => handleLogin()}>
               <LoginStyle.FormGroup>
                 <LoginStyle.Label htmlFor="email">Entrer votre email :</LoginStyle.Label>
                 <LoginStyle.Input type="text" name="email" value={Email} onChange={(event) => {setEmail(event.target.value)}} placeholder="Email" />
@@ -53,7 +54,7 @@ export const ForgetPassword = (props) => {
             </LoginStyle.Form>
           </LoginStyle.Content>
           <LoginStyle.Footer>
-            <LoginStyle.Btn type="button" onClick={() => handleLogin()}>
+            <LoginStyle.Btn type="submit" onClick={() => handleLogin()} type="submit">
               Récuperer
             </LoginStyle.Btn>
           </LoginStyle.Footer>

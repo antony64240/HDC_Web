@@ -1,8 +1,9 @@
-import React,{useEffect, useState} from "react";
+import React,{ useEffect, useState } from "react";
 import loginImg from "../../../image/login.svg";
 import LoginStyle from './style/index_style';
 import EmailValidator from 'email-validator';
-import {CircularProgress} from '@material-ui/core';
+import { CircularProgress } from '@material-ui/core';
+import { CONFIG }  from '../../enum-list/enum-list';
 
 
 export const ForgetPassword = () => {
@@ -10,10 +11,13 @@ export const ForgetPassword = () => {
 
     const [message, setMessage] = useState("");
 
+
+
+
     const handleLogin = () => {     
       if(EmailValidator.validate(Email)){
       setMessage(<CircularProgress />) 
-        fetch("http://localhost:3001/api/ForgotPassword", {
+        fetch(`${CONFIG.URLAPI}ForgotPassword`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

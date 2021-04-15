@@ -18,7 +18,7 @@ class mailSender {
         const mailOptions = {
             to: email,
             subject: `Please confirm your Email account`,
-            html: `Hello,<br> Please Click on the link to verify your email.<br><a href=http://localhost:3000/VerifyEmail?token=${token}>Click here to verify</a>`
+            html: `Hello,<br> Please Click on the link to verify your email.<br><a href=${__config.route.prod}#/VerifyEmail?token=${token}>Click here to verify</a>`
         }
         this.smtpTransport.sendMail(mailOptions, function (error, response) {
             if (error) {
@@ -34,7 +34,7 @@ class mailSender {
         const mailOptions = {
             to: email,
             subject: `Password recovery`,
-            html: `Hello,<br> Please Click on the link to recover you password.<br><a href=http://localhost:3000/recovery?token=${token}>Click here to recovery</a>`
+            html: `Hello,<br> Please Click on the link to recover you password.<br><a href=${__config.route.prod}#/recovery?token=${token}>Click here to recovery</a>`
         }
         this.smtpTransport.sendMail(mailOptions, function (error, response) {
             if (error) {    

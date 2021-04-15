@@ -7,8 +7,10 @@ module.exports = {
     if (token) {
         let manager = new manageToken();
         if (manager.verifyToken(manager.decryptToken(token))){
+              console.log("token valid")
                next()
             } else {
+              console.log("token invalid")
               return res.status(498).json({message: "Token Invalid"})
             }
     } else {
@@ -18,10 +20,13 @@ module.exports = {
   verifyToken: async (req, res, next) => {
     let token = req.headers.token;
     if (token) {
+        
         let manager = new manageToken();
         if (manager.verifyToken(manager.decryptToken(token))){
+          console.log("token valid")
           return res.status(201).json({message: "Token Valid"})
             } else {
+              console.log("token invalid")
               return res.status(498).json({message: "Token Invalid"})
             }
     } else {
