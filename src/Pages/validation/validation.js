@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import { CONFIG }  from '../../components/enum-list/enum-list';
 import gifImg from '../../image/checkmark.gif';
 import styled from 'styled-components';
-
 const IMG = styled.img`
 
 `;
@@ -20,6 +19,7 @@ const VerifyEmail = () => {
     
 
     const requestValidation = () =>{
+      
         const token = getQueryStringValue("token");
         fetch(`${CONFIG.URLAPI}verifyEmail/${token}`, {
             method: "GET",

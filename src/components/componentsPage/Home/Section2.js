@@ -10,7 +10,6 @@ import {useTranslation } from "react-i18next";
 const Section1 = () => {
     const { t } = useTranslation();
     const [show, doShow] = useState({
-
         itemTwo: false,
         itemThree: false
       });

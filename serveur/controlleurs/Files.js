@@ -5,36 +5,34 @@ var path = require('path');
 const __Config =require('../config.json');
 const url = require("url");
 const manageToken = require('../middleware/manageToken');
+const FilesManager = require('../services/filesManager');
+
+
 
 exports.filesList = async (req, res, next) => {
-        let arrayList = [];
-        let dir = `${__Config.Folder.path}${req.headers.email}/${req.headers.urlrequest}`;
-        fs.readdir(dir, (error, fileNames) => {
-            if (error) 
-                throw error;
-            let ext = "";
-            fileNames.forEach(filename => {
-                let name = path.parse(filename).name;
-                if (path.parse(filename).ext == "") {
-                    ext = "dossier";
-                } else {
-                    ext = path.parse(filename).ext;
-                }
-                let length = filename.length;
-                file = new File(name, ext, length);
-                arrayList.push(file);
-            });
-            res.status(201).json({list: arrayList, status: "success"});
-        });
+        const { email , urlrequest } = req.headers;
+        try{
+            let result = FilesManager.getFilesList(email,urlrequest);
+            res.status(201).json({list : result.list, status : result.status})
+        }catch(err){
+            res.status(401).json({response : err , status : "error"})
+        }        
 };
 
 
 
 
 exports.downloadFiles = async  (req, res,next) => {
-    // fileName = __Config.Folder.path+Email+filePath+"/"+fileName; 
-    // res.status(200).download(filePath,fileName)
+    let url = req.headers.url
+    let name = req.headers.name
+    let manager = new manageToken();
+    console.log(manager.decryptToken(req.headers.token));
+
+    console.log(req.headers.url)
+    console.log(req.headers.name)
+    res.download(`C:/Users/anton/eclipse-workspace/FichierClient/antony64240@gmail.com/${url}/${name}.pdf`)
 };
+
 
 exports.UploadFile = async (req, res, next) => { 
     let query = url.parse(req.originalUrl, true).query.url;
@@ -68,6 +66,7 @@ exports.UploadFile = async (req, res, next) => {
         return res.status(498).json({message: "Token Invalid"})
     }
 };
+
 
 
 const getQueryStringValue =  (key,url) => {  

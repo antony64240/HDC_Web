@@ -8,12 +8,11 @@ import { Progress } from 'antd';
 import 'antd/dist/antd.css';
 
 
-const  Upload  = (props) => {
+const  Upload  = ( props ) => {
 
     let currentUrl = props.currentUrl;
     let setData = props.Data;
-    let UploadFile =props.DataLenght;
-
+    let UploadFile = props.DataLenght;
 
     const [selectedFile, setselectedFile] = useState();
     const [loaded, setloaded] = useState(Number);
@@ -36,6 +35,7 @@ const  Upload  = (props) => {
         }
         return true;
     }
+
     const maxSelectFile = (event) => {
         let files = event.target.files
             if (files.length > 5) {
@@ -46,6 +46,7 @@ const  Upload  = (props) => {
             }
         return true;
     }
+
     const checkFileSize = (event) => {
         let files = event.target.files;
         let size = 20000000;
@@ -78,6 +79,8 @@ const  Upload  = (props) => {
 
     const onClickHandler = () => {
         const data = new FormData();
+        let User = JSON.parse(localStorage.getItem('User'));
+        currentUrl = ""
         if(selectedFile==null){
             const msg = 'Aucun fichier sélectionné.'
             toast.warn(msg)
@@ -85,7 +88,7 @@ const  Upload  = (props) => {
             for (var x = 0; x < selectedFile.length; x++) {
                 data.append('file', selectedFile[x]);
             }
-            axios.post(`${CONFIG.URLAPI}UploadFile?url=Currenturl=${currentUrl}?user=${localStorage.getItem("Email")}?token=${localStorage.getItem("token")}`,
+            axios.post(`${CONFIG.URLAPI}UploadFile?url=Currenturl=${currentUrl}?user=${User.email}?token=${localStorage.getItem("token")}`,
             data
             ,{
                 onUploadProgress: ProgressEvent => {
@@ -97,22 +100,22 @@ const  Upload  = (props) => {
                 setData(UploadFile+selectedFile.length)
                 
             }).catch(err => {
-                console.log(err)
+                if(err){
+                setTimeout(()=> window.location.href = "#/Login" ,2000)
                 toast.error('Perte de connexion, vous allez être redirigés.')
+                }
             })
         }
     }
 
         return( 
-            <div style={{position:'fixed',bottom:'200px'}}> 
-              <div >
+            <React.Fragment>
                 <label>Upload Your File </label>
                 <input type="file"  multiple onChange={onChangeHandler}/>
-              </div>  
-              <div >
               <ToastContainer />
-              <div style={{display:"block"}}>
+              <div style={{display:"block",width:"30px"}}>
                 <Progress
+                        width="60px"
                         type="circle"
                         strokeColor={{
                             '0%': '#108ee9',
@@ -121,9 +124,8 @@ const  Upload  = (props) => {
                         percent={loaded.toFixed(2)}
                     />
                 </div>
-              </div> 
               <button type="button"  onClick={onClickHandler}>Upload</button>
-            </div>
+              </React.Fragment>
       );
 }
 

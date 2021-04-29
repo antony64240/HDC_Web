@@ -5,6 +5,7 @@ var cors = require('cors');
 const route = require('./routes/router');
 const path  = require('path')
 
+
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
@@ -26,7 +27,6 @@ const app = express();
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
-
 
 
   app.use(cors());

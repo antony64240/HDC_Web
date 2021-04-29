@@ -1,31 +1,54 @@
 import React, {useState,useEffect} from 'react';
-import OngletNouveauProjet from '../../components/componentsPage/Project/Project';
+import OngletNouveauProjet from '../../components/componentsPage/newProject/Project';
 import OngletProfilUsers from '../../components/componentsPage/profilUsers/profilUsers';
-import ListFolder from '../../components/componentsPage/Folder/ListFolder'
+import OngletMyProjet from '../../components/componentsPage/Project/Project';
+import ListFolder from '../../components/componentsPage/Folder/ListFolder';
 import {CircularProgress} from '@material-ui/core';
 import { CONFIG } from '../../components/enum-list/enum-list'
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import IconMenu from '../../image/home.png';
+import { IMG , HEADER } from './style';
+import { Pages } from './enum';
+import  LANG  from '../../language/Lang';
+
+
 const User = () => {
 
-   const [isLoadedOngletProject, setisLoadedOngletProject] = useState(false);
+   const [isLoadedOngletNewProject, setisLoadedOngletNewProject] = useState(false);
    const [isLoadedOngletUser, setisLoadedOngletUser] = useState(true);
+   const [isLoadedOngletMyProject, setisLoadedOngletMyProject] = useState(false);
    const [loadPage, SetloadPage] = useState(false); 
+   const [anchorEl, setAnchorEl] = React.useState(null);
 
+   const handleClick = (event) => {
+     setAnchorEl(event.currentTarget);
+   };
+ 
+   const handleClose = () => {
+     setAnchorEl(null);
+   };
    
 
    const OngletUsers = [
       {
-         title: 'Nouveau Projet',
+         title: Pages.NEWPROJECT,
       },
       {
-         title: 'Mon Profils',
+         title: Pages.PROJECT,
       },
       {
-         title : 'Mes Documents'
+         title : Pages.PROFILS
+      },
+      {
+         title : Pages.LOGOUT
       }
    ]
 
    const SendReq = () => {
-      if(localStorage.getItem("Email")!= null){
+
+      if( localStorage.getItem("User") !== null && localStorage.getItem("User") !== '' ){
+         let User = JSON.parse(localStorage.getItem("User"));
       fetch(`${CONFIG.URLAPI}CheckToken`, {
           method: "GET",
           headers: {
@@ -33,6 +56,7 @@ const User = () => {
               Token: localStorage.getItem('token')
           }
       }).then((result) => {
+         console.log(result.status)
             if(result.status!==201){
                window.location.href ='#/Login';
             }else{
@@ -53,50 +77,54 @@ const User = () => {
    },[1]);
 
    const HandleChange = (event) => {
-      if(event === "Nouveau Projet"){
+      if(event === Pages.NEWPROJECT){
          setisLoadedOngletUser(false);
-         setisLoadedOngletProject(true);
+         setisLoadedOngletMyProject(false);
+         setTimeout(()=>setisLoadedOngletNewProject(true),1000)
       }
-      if(event === "Mon Profils"){
-         setisLoadedOngletUser(true);
-         setisLoadedOngletProject(false);
+      if(event === Pages.PROFILS){
+         setisLoadedOngletNewProject(false);
+         setisLoadedOngletMyProject(false);
+         setTimeout(()=>setisLoadedOngletUser(true),1000)
       }
+      if(event === Pages.LOGOUT){
+         localStorage.setItem("User", '');
+         localStorage.setItem("token", '');
+         window.location.href ='#/Login';
+      }
+      if(event === Pages.PROJECT){
+         setisLoadedOngletNewProject(false);
+         setisLoadedOngletUser(false);
+         setTimeout(()=>setisLoadedOngletMyProject(true),1000)
+      }
+      handleClose()
    }
-   
-   function changeBackground(e) {
-      e.target.style.background = 'gray';
-    }
-    function changeBackgroundback(e) {
-      e.target.style.background = 'rgb(239, 239, 239)';
-    }
 
-  
     
     if(!loadPage){
       return (<div style={{textAlign:'center', marginTop:'15%'}}><CircularProgress /></div>)
     }else{
       return (
-         <div style={baseStyle}> 
-            <div style={barslide}>
-               <ul style={{listStyleType: 'none'}}>
-                  {OngletUsers.map((item, index) => {
-                     return (
-                        <div key={index}>
-                           <button style={StyleButton} onClick={()=> HandleChange(item.title)} onMouseEnter={changeBackground} onMouseLeave={changeBackgroundback} >
-                           <li  style={Styleli}>
-                              {item.title}
-                           </li>
-                        </button> 
-                        </div>
-                     )
+         <div > 
+            <HEADER>
+             <LANG/>
+             <IMG src={IconMenu} onClick={handleClick}/>
+               <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}>
+                        {OngletUsers.map((item , keys) => {
+                           return (
+                        <MenuItem key={keys} onClick={() => HandleChange(item.title)}>{item.title}</MenuItem>
+                        )
                   })}
-               </ul>
-            </div>
-               <div style={Composent}>
+               </Menu>
+            </HEADER>
                   <OngletProfilUsers opacityProfil={isLoadedOngletUser}  />
-                  <OngletNouveauProjet opacityProject={isLoadedOngletProject} />
-               </div>      
-               <ListFolder/>
+                  <OngletNouveauProjet opacityProject={isLoadedOngletNewProject} />
+                  <OngletMyProjet opacityProject={isLoadedOngletMyProject} />     
       </div>
 
       );
@@ -106,33 +134,4 @@ const User = () => {
 export default User;
 
 
-   const baseStyle = {
-   };
-
-   const StyleButton ={
-    outline:  'none',
-    width:'17rem',
-    height:'3rem',
-    margin:'1rem',
-   background:'-internal-light-dark(rgb(239, 239, 239), rgb(59, 59, 59))'
-   }
-
-   const Styleli ={
-    margin: '10px',
-    padding: '0rem 5rem',
-    display: 'contents'
-   }
-
-  const Composent = {
-     displayContent:'center',
-     width:'70rem'
-   };   
-
-   const barslide = {
-      position:'fixed',
-      border: '0px',
-      width: '17rem',
-      bottom : '10rem',
-      top:'10rem'
-    };   
  

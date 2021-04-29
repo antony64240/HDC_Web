@@ -30,19 +30,19 @@ const ListFolder = () => {
 
     
     const SendReq = async () => {
+        let User = JSON.parse(localStorage.getItem('User'));
         fetch(`${CONFIG.URLAPI}ListFichier`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
                 "UrlRequest": currentUrl,
-                "Email": localStorage.getItem('Email'),
+                "Email": User.email,
                 "token":localStorage.getItem('token')
             }
         }).then((response) => {
             if (response.status !== 201) {
             } else 
                 return response.json();
-            
         }).then((result) => {
             setfiles(result.list)
             setisLoaded(true);
@@ -51,12 +51,13 @@ const ListFolder = () => {
 
 
     const handleClick = (name, extension) => {
+        let User = JSON.parse(localStorage.getItem('User'));
         if (extension === "dossier") {
             setcurrentUrl(`${currentUrl}/${name}`);
         } else {
             axios.get(`${CONFIG.URLAPI}Download`,{
                 headers: {
-                    email:localStorage.getItem('Email'),
+                    email:User.email,
                     currentUrl: currentUrl,
                     token:localStorage.getItem('token')
                 }
@@ -93,9 +94,9 @@ const ListFolder = () => {
     } else {
 
         var content = files.map((data,index) => <div key={index} className="test"
-            onDoubleClick={
-                () => handleClick(data.name, data.extension)
-        }><ProductList data={data}/></div>);
+            onDoubleClick={() => handleClick(data.name, data.extension)}>
+                <ProductList data={data}/>
+            </div>);
         return(
             <div>
                 <HamburgerButton 

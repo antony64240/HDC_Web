@@ -76,7 +76,41 @@
     "back" : {
         "translate-button": "FR",
         "translated-text": "Retour"
+    },
+    "TextPersonnalInfo" : {
+        "translate-button": "FR",
+        "translated-text": "**Vos données personnelles seront traitées de façon strictement confidentielle et ne seront en aucun cas transmises à de tiers personnes physiques ou morales.**"
+    },
+    "firstname" : {
+        "translate-button": "FR",
+        "translated-text": "Nom"
+    },
+    "lastname" : {
+        "translate-button": "FR",
+        "translated-text": "Prenom"
+    },
+    "city" : {
+        "translate-button": "FR",
+        "translated-text": "Ville"
+    },
+    "phone" : {
+        "translate-button": "FR",
+        "translated-text": "Telephone"
+    },
+    "compagny" : {
+        "translate-button": "FR",
+        "translated-text": "Entreprise"
+    },
+    "address" : {
+        "translate-button": "FR",
+        "translated-text": "Adresse"
+    },
+    "CityAreaCode" : {
+        "translate-button": "FR",
+        "translated-text": "Code postal"
+    },
+    "PersonnalInfo" : {
+        "translate-button": "FR",
+        "translated-text": "Données personnelles :"
     }
-    
-    
 }

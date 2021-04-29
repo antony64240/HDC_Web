@@ -22,6 +22,10 @@ class Headers extends Component {
         this.countInterval = setInterval(() => this.increment(), 5000)
     }
 
+    componentWillUnmount() {
+        this.countInterval = null;
+    }
+
     increment() {
         if(this.state.image1===true){
             this.setState({image1:false})

@@ -16,6 +16,8 @@ const Section3 = () => {
         itemThree: false
       });
 
+    
+
      const secondRef = useRef(null),
         ThreeRef = useRef(null)
 

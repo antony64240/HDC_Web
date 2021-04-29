@@ -1,6 +1,6 @@
 {
   "route":{
-    "dev":"http://localhost:3001/",
+    "dev":"http://localhost:3000/",
     "prod":"http://86.234.214.142:3001/"
   },
   "Folder":{

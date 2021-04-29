@@ -68,6 +68,7 @@ export const FormGroup = styled.div`
 `;
 
 export const Input = styled.input`
+line-height: 0;
     margin-top: 6px;
     min-width: 18em;
     height: 37px;

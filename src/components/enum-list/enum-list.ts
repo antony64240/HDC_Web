@@ -1,5 +1,5 @@
 // export enum CONFIG {
-//     URLAPI = 'http://86.234.214.142:3001/api/'
+//     URLAPI = 'http://86.234.214.142/api/'
 // }
 
 

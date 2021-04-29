@@ -4,6 +4,7 @@ import LoginStyle from './style/index_style';
 import { CONFIG }  from '../../enum-list/enum-list';
 import { CircularProgress } from '@material-ui/core';
 
+
 export class Login extends React.Component {
 
   constructor(props) {
@@ -22,7 +23,6 @@ export class Login extends React.Component {
     enterpush = (e)  => {
       if (e.key === 'Enter') {
         if(this.state.timer == true){
-          console.log(this.timer)
           this.handleLogin()
           this.setState({timer:false})
           setTimeout(() => this.setState({timer:true}),1000)
@@ -55,35 +55,28 @@ export class Login extends React.Component {
         .then(response => response.json())
         .then((result) => {
             if (result['status'] === "success") {
-                localStorage.setItem('Email',  result.user.email);
-                localStorage.setItem('Phone', result.user.phone);
-                localStorage.setItem('Areacide', result.user.Areacode);
-                localStorage.setItem('City', result.user.city);
-                localStorage.setItem('Compagny', result.user.compagny);
-                localStorage.setItem('Compagny', result.user.compagny);
+                localStorage.setItem('User',  JSON.stringify(result.user));
                 localStorage.setItem('token', result.token);
                 window.location.href ='#/User';
             } else {
                 localStorage.setItem('connected', false);
                 localStorage.setItem('token', '')
-                localStorage.setItem('Email', '');
+                localStorage.setItem('User', '');
                 this.setState({errorMessage:result.response});
             }
         })
-        
-
     }
 
     handleFormChange = event => {
-      
       let loginParamsNew = {
           ...this.state.loginParams
       };
-      console.log(loginParamsNew)
       let val = event.target.value;
       loginParamsNew[event.target.name] = val;
       this.setState({loginParams: loginParamsNew});
     };
+
+  
 
     forgetMdp = () =>{
       this.props.ismdpForget.setState({ismdpForget:true})
@@ -93,7 +86,7 @@ export class Login extends React.Component {
     render() {
         return(
           <LoginStyle>
-          <LoginStyle.Header>Connexion</LoginStyle.Header>
+          <LoginStyle.Header>Login</LoginStyle.Header>
           <LoginStyle.Content>
             <LoginStyle.IMGContainer>
               <LoginStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
@@ -104,7 +97,7 @@ export class Login extends React.Component {
                 <LoginStyle.Input type="text" name="email" onChange={this.handleFormChange} placeholder="email"  />
               </LoginStyle.FormGroup>
               <LoginStyle.FormGroup>
-                <LoginStyle.Label htmlFor="password">Mot de passe :</LoginStyle.Label>
+                <LoginStyle.Label htmlFor="password">Password :</LoginStyle.Label>
                 <LoginStyle.Input type="password" name="password" onChange={this.handleFormChange} placeholder="password" />
               </LoginStyle.FormGroup>
             </LoginStyle.Form>
@@ -112,11 +105,10 @@ export class Login extends React.Component {
           </LoginStyle.Content>
           <LoginStyle.Footer>
             <LoginStyle.Btn  className="btn" onClick={this.handleLogin.bind(this)}>
-              Connexion
+              Login
             </LoginStyle.Btn>
           </LoginStyle.Footer>
-            <LoginStyle.Href onClick={this.forgetMdp}> Mdp oublié?</LoginStyle.Href> 
-            
+            <LoginStyle.Href onClick={this.forgetMdp}> Forgot Password ?</LoginStyle.Href> 
         </LoginStyle>
         );
     }

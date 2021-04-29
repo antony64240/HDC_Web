@@ -6,62 +6,23 @@ const Escape = require('escape-html');
 let uuid = require('uuid');
 const  fs  = require('fs');
 const __Config =require('../config.json');
+const ORM = require('../services/ORM')
 
 
-exports.createUsers = (req, res, next) => {
-  let password = req.body.password;
-      email = req.body.email;      
-            if(!email){
-                return res.json({response : 'Veuillez entrer une adresse mail' , status: '201'});
-              } else {
-                if(!EmailValidator.validate(email)){
-                  return res.json({ response : 'Votre adresse mail est incorrect', status: '201'});
-                } else {
-                  if(password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)){
-                    preRegisterSchema.findOne({Email:Escape(email)}, (err,search) => {
-                      if(search==null){
-                          UserSchema.findOne({Email: Escape(email)}, function(err, searchemail) {
-                            if(err) {
-                                return res.json({response: 'Un problème interne est survenue', status: 'error'});
-                            } else {
-                                if(searchemail == null) {
-                                  let dataUsers = new preRegisterSchema({     
-                                        Password: password,
-                                        Email: escape(email),
-                                        Token : uuid.v4()
-                                      });
-                                      preRegisterSchema.create(dataUsers, function(err, created) {
-                                          if(err) {              
-                                            return res.json({response: err.message, status: 'error'});
-                                          } else {
-                                            let dataUserPublic = {
-                                              Password: password,
-                                              Email: escape(email)
-                                            }
-                                            return res.json({response: 'Votre compte a bien été créé', user: dataUserPublic, status:'success'});
-                                        }
-                                        });
-                                } else {
-                                  return res.json({response: 'Cette adresse email est déjà utilisé', status: 'error'});
-                                }
-                              }
-                            });
-                          }else{
-                            return res.json({response: 'Cette adresse email est en attente de validation', status: 'error'});
-                          }
-                        });
-                }else{
-                  return res.json({response: 'Le mot de passe doit au moins 8 caractères, dont une majuscule et un chiffre', status: '201'}); 
-                }  
-              }
-            }
-              
+exports.createUsers = async (req, res, next) => {
+  let { password , email } = req.body;
+  try{
+      let result = await ORM.createUser(password, email);
+      res.status(200).json({ response : result.response , status : result.status })
+  }catch(err){
+      res.status(200).json({ response : err.response , status : err.status })
+  }
 };
 
 
 exports.verifyEmail = async (req,res,next) => {
   let token = req.params.token
-  console.log(token)
+  console.log('im ere ')
   preRegisterSchema.findOne({Token:token}, function(err,search) {
     if (search != null){
       let dataUsers = new UserSchema({     
@@ -77,13 +38,23 @@ exports.verifyEmail = async (req,res,next) => {
               return res.json({response: 'Error server', status:'error'});
             }else{
               fs.mkdir(`${__Config.Folder.path}${search.Email}`,function(e){
-                console.log(e)
                 if(e){
-                  return res.json({response: 'Erreur lors de la création du fichier, contacter le support.', status:'Error'});
                 } else {
-                  return res.json({response: 'Votre compte a bien été validé', status:'success'});
-                }
-                });
+                  fs.mkdir(`${__Config.Folder.path}${search.Email}/devis`,(e)=>{
+                    if(err){
+                      return res.json({response: 'Erreur lors de la création du fichier, contacter le support.', status:'Error'});
+                    }else{
+                      fs.mkdir(`${__Config.Folder.path}${search.Email}/facturation`,(e)=>{
+                        if(e){
+                          return res.json({response: 'Erreur lors de la création du fichier, contacter le support.', status:'Error'});
+                        }else{
+                         return res.json({response: 'Votre compte a bien été validé', status:'success'});
+                        }
+                      })
+                    }
+                  })
+                }                
+              });
             }
           })          
         }

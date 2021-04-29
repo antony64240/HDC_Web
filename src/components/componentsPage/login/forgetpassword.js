@@ -5,7 +5,6 @@ import EmailValidator from 'email-validator';
 import {CircularProgress} from '@material-ui/core';
 import { CONFIG }  from '../../enum-list/enum-list';
 
-
 export const ForgetPassword = (props) => {
 
 
@@ -16,14 +15,10 @@ export const ForgetPassword = (props) => {
       if(EmailValidator.validate(Email)){
       setMessage(<CircularProgress />) 
         fetch(`${CONFIG.URLAPI}ForgotPassword`, {
-            method: "POST",
-            body: JSON.stringify(
-                {
-                  email: Email,
-                }
-            ),
+            method: "GET",
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                email: Email,
             }
         })
         .then(response => response.json())

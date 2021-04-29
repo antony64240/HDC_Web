@@ -16,16 +16,19 @@ const Navbar = () => {
     const [show, doShow] = useState(false);
 
     useLayoutEffect(() => {
-    window.addEventListener("scroll", () =>{
-       let a =  document.getElementById('Homecontainer')
-       let posNavbY = a.getBoundingClientRect().top;
-       if(posNavbY>72){
-        doShow(false)
-       }else{
-        doShow(true)
-       }
-    });
+        const onScrollActive = () => {
+            let a =  document.getElementById('Homecontainer')
+            let posNavbY = a.getBoundingClientRect().top;
+            if(posNavbY>72){
+                doShow(false)
+            }else{
+                doShow(true)
+            }
+        };
+        window.addEventListener("scroll", onScrollActive);
+        return () => window.removeEventListener("scroll", onScrollActive);
     },[1]);
+     
 
     useLayoutEffect(()=>{
         let a = document.getElementById('navbar')
@@ -60,7 +63,7 @@ const Navbar = () => {
     const MenuItems = [
         {
             title: t('header_navbar1.translated-text'),
-            url: "#/Accueil",
+            url: "#/",
             cName: 'nav-links',
             classNameli : 'nav-li'
         },

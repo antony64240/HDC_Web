@@ -75,5 +75,41 @@
     "back" : {
         "translate-button": "EN",
         "translated-text": "Back"
+    },
+    "firstname" : {
+        "translate-button": "EN",
+        "translated-text": "Firstname"
+    },
+    "lastname" : {
+        "translate-button": "EN",
+        "translated-text": "Lastname"
+    },
+    "city" : {
+        "translate-button": "EN",
+        "translated-text": "City"
+    },
+    "phone" : {
+        "translate-button": "EN",
+        "translated-text": "Phone number"
+    },
+    "compagny" : {
+        "translate-button": "EN",
+        "translated-text": "Compagny"
+    },
+    "address" : {
+        "translate-button": "EN",
+        "translated-text": "Address"
+    },
+    "CityAreaCode" : {
+        "translate-button": "EN",
+        "translated-text": "Zip code"
+    },
+    "TextPersonnalInfo" : {
+        "translate-button": "EN",
+        "translated-text": "**Your personal data will be treated in a strictly confidential manner and will not be passed on to third parties or corporations.**"
+    },
+    "PersonnalInfo" : {
+        "translate-button": "EN",
+        "translated-text": "Personal informations :"
     }
 }

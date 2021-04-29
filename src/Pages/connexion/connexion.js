@@ -31,8 +31,8 @@ class Connexion extends React.Component {
 
   render() {
     const { isLogginActive } = this.state;
-    const current = isLogginActive ? "Inscription" : "Connexion";
-    const currentActive = isLogginActive ? "Connexion" : "Inscription";
+    const current = isLogginActive ? "Register" : "Login";
+    const currentActive = isLogginActive ? "Login" : "Register";
     if(!this.state.ismdpForget){
       return (
         <div className="Connexion">

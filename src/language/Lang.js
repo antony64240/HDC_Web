@@ -9,7 +9,7 @@ const Lang = () => {
     
     useEffect(()=>{
         setLang(Language.FR)
-    },1)
+    },[])
 
     useLayoutEffect(()=>{
         switch(lang){
