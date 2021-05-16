@@ -4,18 +4,18 @@ const Cryptr =require('cryptr');
 class ManageToken
 {
     createToken(data) {
-        const generate = jwt.sign({data}, "secret");
+        const generate = jwt.sign({data}, "");
         return generate;
     }
 
     decodeToken(token) {
-        var decoded = jwt.verify(token, "secret");
+        var decoded = jwt.verify(token, "");
         return decoded;
     }
 
     verifyToken(token) {
         try {
-            var decoded = jwt.verify(token, "secret");
+            var decoded = jwt.verify(token, "");
                 if(decoded.data.tokenExpiration > Date.now()){
                     return true;
                 }else{
@@ -28,7 +28,7 @@ class ManageToken
 
     getData(token){
         try {
-            var decoded = jwt.verify(this.decryptToken(token), "secret");
+            var decoded = jwt.verify(this.decryptToken(token), "");
             return decoded.data;
           } catch(err) {
             return 'Token invalid';
@@ -36,13 +36,13 @@ class ManageToken
     }
 
     cryptToken(token) {
-        const encrypt = new Cryptr("secret");
+        const encrypt = new Cryptr("");
         return encrypt.encrypt(token);
     }
 
     decryptToken(crypted) {
         try {
-            const decrypt = new Cryptr("secret");
+            const decrypt = new Cryptr("");
             return decrypt.decrypt(crypted);
         } catch(err) {
             return "Impossible to decrypte token";
