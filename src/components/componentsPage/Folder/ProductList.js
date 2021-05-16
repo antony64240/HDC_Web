@@ -15,26 +15,38 @@ const images = [
     }, {
         url: LogoJpg,
         value: ".jpg"
-    },
-    {
-        url: LogoDossier,
-        value: "dossier"
     }
 ];
 
 
+function ProductIcon({data, onClick}) {
 
-
-function ProductList(props) {
-
-    return (
-            images.map((item,index) => {
-                if (item.value === props.data.extension) {
-                    return <div className ='boxfile' key={index} > <img alt="LogoFiles" className='logoFiles' src={item.url} style={{width:'4rem'}} ></img><p style={{color:'black',fontSize:'0.7rem',paddingTop:"0px"}}>{props.data.name}</p></div>
-                }
-        })
-    )
+    return(images.map((item) => {
+        const name = data.name.substring(0, 15);
+        if (item.value === data.extension.toLowerCase()) {
+            return <div onClick={(e) => onClick(e)}
+                className='boxfile'
+                key={data._id}>
+                <img alt="LogoFiles" className='logoFiles'
+                    src={item.url}
+                    style={{width: '4rem'}
+                }></img>
+                <p style={
+                    {
+                        color: 'black',
+                        fontSize: '0.7em',
+                        paddingTop: "0px"
+                    }
+                }>
+                    {name}</p>
+                <div style={{display:"none"}}>
+                    {data.name+data.extension}
+                </div>
+            </div>
+            
+        }
+    }))
 }
 
 
-export default ProductList
+export default ProductIcon

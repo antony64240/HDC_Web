@@ -1,6 +1,10 @@
 import React from "react";
 import "./connexion.css";
-import { Login, Register, ForgetPassword} from "../../components/componentsPage/login/index";
+import { ForgetPassword } from "../../components/componentsPage/login/index";
+import Login from "../../components/componentsPage/login/Login";
+import Register from "../../components/componentsPage/login/register";
+import { withTranslation  } from "react-i18next";
+import  Lang  from "../../language/Lang"
 
 class Connexion extends React.Component {
   constructor(props) {
@@ -8,8 +12,12 @@ class Connexion extends React.Component {
     this.state = {
       isLogginActive: true,
       ismdpForget: false,
-      current : "Inscription"
+      current : "Inscription",
     };
+    this.setState(()=>{})
+    this.setState([])
+    this.setState({},()=>{})
+    this.setState({})
   }
 
   componentDidMount() {
@@ -30,11 +38,15 @@ class Connexion extends React.Component {
   }
 
   render() {
+    const { t } = this.props;
     const { isLogginActive } = this.state;
-    const current = isLogginActive ? "Register" : "Login";
-    const currentActive = isLogginActive ? "Login" : "Register";
+    const current = isLogginActive ? t('register.translated-text') : t('connexion.translated-text');
+    const currentActive = isLogginActive ? t('connexion.translated-text') : t('register.translated-text');
     if(!this.state.ismdpForget){
       return (
+
+        <React.Fragment>
+        <Lang/>
         <div className="Connexion">
           <div className="login">
             <div className="container" ref={ref => (this.container = ref)}>
@@ -53,9 +65,11 @@ class Connexion extends React.Component {
             />
           </div>
         </div>
+        </React.Fragment> 
       );
     }else{
       return (
+
         <div className="Connexion">
           <div className="login">
             <div className="container" ref={ref => (this.container = ref)}>
@@ -63,6 +77,7 @@ class Connexion extends React.Component {
             </div>
           </div>
         </div>
+        
       )
     }
   }
@@ -83,4 +98,4 @@ const RightSide = props => {
   );
 };
 
-export default Connexion;
+export default withTranslation()(Connexion);

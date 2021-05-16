@@ -1,10 +1,5 @@
 const manageToken = require('../middleware/manageToken');
 
-
-
-
-const testFolder = 'C:/Users/anton/eclipse-workspace/FichierClient';
-
 exports.checkToken = async (req, res, next) => {
     var token = req.body.token;
     const ManagerToker = new manageToken();

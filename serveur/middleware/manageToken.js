@@ -26,6 +26,15 @@ class ManageToken
           }
     }
 
+    getData(token){
+        try {
+            var decoded = jwt.verify(this.decryptToken(token), "secret");
+            return decoded.data;
+          } catch(err) {
+            return 'Token invalid';
+          }
+    }
+
     cryptToken(token) {
         const encrypt = new Cryptr("secret");
         return encrypt.encrypt(token);
@@ -52,4 +61,4 @@ class ManageToken
         return t;
     }
 }
-module.exports = ManageToken;
+module.exports = new ManageToken();

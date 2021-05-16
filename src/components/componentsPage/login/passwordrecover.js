@@ -4,13 +4,13 @@ import LoginStyle from './style/index_style';
 import EmailValidator from 'email-validator';
 import { CircularProgress } from '@material-ui/core';
 import { CONFIG }  from '../../enum-list/enum-list';
-
+import { useTranslation } from "react-i18next";
 
 export const ForgetPassword = () => {
 
 
     const [message, setMessage] = useState("");
-
+    const { t } = useTranslation();
 
 
 
@@ -35,29 +35,30 @@ export const ForgetPassword = () => {
 
 
         return(
-          <LoginStyle>
-          <LoginStyle.Header>Mot de passe oublié?</LoginStyle.Header>
-          <LoginStyle.Content>
-            <LoginStyle.IMGContainer>
-              <LoginStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
-            </LoginStyle.IMGContainer>
-            <LoginStyle.Form>
-              <LoginStyle.FormGroup>
-                <LoginStyle.Label htmlFor="email">Entrer votre email :</LoginStyle.Label>
-                <LoginStyle.Input type="text" name="email" value={Email} onChange={(event) => {setEmail(event.target.value)}} placeholder="Email" />
-              </LoginStyle.FormGroup>
-            </LoginStyle.Form>
-          </LoginStyle.Content>
-          <LoginStyle.Footer>
-            <LoginStyle.Btn type="button" onClick={() => handleLogin()}>
-              Récuperer
-            </LoginStyle.Btn>
-          </LoginStyle.Footer>
-            <LoginStyle.Btn type="button" onClick={() => forgetMdp()}>
-              Retour
-            </LoginStyle.Btn>
-            <LoginStyle.Label><br/>{message}</LoginStyle.Label>
-        </LoginStyle>
-        
+          <React.Fragment>
+            <LoginStyle>
+            <LoginStyle.Header></LoginStyle.Header>
+            <LoginStyle.Content>
+              <LoginStyle.IMGContainer>
+                <LoginStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
+              </LoginStyle.IMGContainer>
+              <LoginStyle.Form>
+                <LoginStyle.FormGroup>
+                  <LoginStyle.Label htmlFor="email">{t('Emailforgetpassword.translated-text')}:</LoginStyle.Label>
+                  <LoginStyle.Input type="text" name="email" value={Email} onChange={(event) => {setEmail(event.target.value)}} placeholder="Email" />
+                </LoginStyle.FormGroup>
+              </LoginStyle.Form>
+            </LoginStyle.Content>
+            <LoginStyle.Footer>
+              <LoginStyle.Btn type="button" onClick={() => handleLogin()}>
+              {t('recover.translated-text')}
+              </LoginStyle.Btn>
+            </LoginStyle.Footer>
+              <LoginStyle.Btn type="button" onClick={() => forgetMdp()}>
+              {t('back.translated-text')}
+              </LoginStyle.Btn>
+              <LoginStyle.Label><br/>{message}</LoginStyle.Label>
+          </LoginStyle>
+        </React.Fragment>
         );
 }

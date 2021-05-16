@@ -1,33 +1,31 @@
 
 const UserSchema = require('../models/Users');
-const EmailValidator =require('email-validator');
 const preRegisterSchema = require('../models/PreRegister');
-const Escape = require('escape-html');
-let uuid = require('uuid');
+const manageToken = require('../middleware/manageToken');
 const  fs  = require('fs');
 const __Config =require('../config.json');
-const ORM = require('../services/ORM')
+const ORM = require('../services/ORM');
+const roles = require('../models/roles');
 
-
-exports.createUsers = async (req, res, next) => {
-  let { password , email } = req.body;
+exports.createUsers = async (req, res) => {
+  const { password , email } = req.body;
   try{
-      let result = await ORM.createUser(password, email);
-      res.status(200).json({ response : result.response , status : result.status })
+      const result = await ORM.createUser(password, email);
+      res.status(200).json(result)
   }catch(err){
-      res.status(200).json({ response : err.response , status : err.status })
+      res.status(200).json(err)
   }
 };
 
 
-exports.verifyEmail = async (req,res,next) => {
-  let token = req.params.token
-  console.log('im ere ')
+exports.verifyEmail = async (req,res) => {
+  const { token } = req.params;
   preRegisterSchema.findOne({Token:token}, function(err,search) {
     if (search != null){
       let dataUsers = new UserSchema({     
         Password: search.Password,
-        Email: search.Email
+        Email: search.Email,
+        Role: roles.USER
       });
       UserSchema.create(dataUsers, function(err, created) {
         if(err){
@@ -38,14 +36,14 @@ exports.verifyEmail = async (req,res,next) => {
               return res.json({response: 'Error server', status:'error'});
             }else{
               fs.mkdir(`${__Config.Folder.path}${search.Email}`,function(e){
-                if(e){
+                if(err){
                 } else {
                   fs.mkdir(`${__Config.Folder.path}${search.Email}/devis`,(e)=>{
                     if(err){
                       return res.json({response: 'Erreur lors de la création du fichier, contacter le support.', status:'Error'});
                     }else{
                       fs.mkdir(`${__Config.Folder.path}${search.Email}/facturation`,(e)=>{
-                        if(e){
+                        if(err){
                           return res.json({response: 'Erreur lors de la création du fichier, contacter le support.', status:'Error'});
                         }else{
                          return res.json({response: 'Votre compte a bien été validé', status:'success'});
@@ -66,28 +64,18 @@ exports.verifyEmail = async (req,res,next) => {
 }
 
 
-exports.getUsers = (req, res, next) => {
-  req.headers.email
-  UserSchema.findOne({email: mail}).then(
-    (things) => {
-      res.status(200).json(things);
-    }
-  ).catch(
-    (error) => {
-      res.status(400).json({
-        error: error
-      });
-    }
-  );
-
-
- 
-
-  
+exports.getUsers = async (req, res) => {
+  try{
+    const result = await ORM.getUsers();
+    res.status(201).json({data : result});
+  }catch(err){
+    res.status(501).json(err);
+  }
 };
 
-exports.DeletOneUser = ('/:id', (req, res, next) => {
-  UserSchema.deleteOne({_id: req.params.id}).then(
+exports.DeletOneUser = ('/:id', (req, res) => {
+  const { id } = req.params;
+  UserSchema.deleteOne({_id: id}).then(
     () => {
       res.status(200).json({
         message: 'Deleted!'

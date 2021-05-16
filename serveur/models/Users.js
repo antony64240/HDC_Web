@@ -27,6 +27,7 @@ const Users = mongoose.model(
         ref: "Project"
       }
     ],
+    Role:{type : Number , required : true}
   })
 );
 

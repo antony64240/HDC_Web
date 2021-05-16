@@ -7,3 +7,9 @@
 body{
   line-height: inherit;
 }
+
+
+.MuiDialog-paperWidthSm {
+  max-width: 1600px!important;
+  padding: 20px!important;
+}

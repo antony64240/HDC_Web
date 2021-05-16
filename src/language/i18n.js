@@ -4,8 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { Language } from "./enum-language";
 import translateEN from './en/translate.json';
 import translateFR from './fr/translate.json';
- 
-let defaultLanguage = Language.FR;
+
  
 // the translations
 const resources = {
@@ -22,7 +21,6 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: defaultLanguage,
  
     keySeparator: ".",  // to support nested translations
  

@@ -1,51 +1,18 @@
-import React, {useState, useEffect} from 'react';
-import EmailValidator from 'email-validator';
-import { TextField , Button } from '@material-ui/core';
-import {TABLE, CONTAINER , ROW , COLUMN , TextTitle , P  } from './style'
-import { useTranslation } from "react-i18next";
-import { CONFIG }  from '../../enum-list/enum-list';
-import { CircularProgress } from '@material-ui/core';
-import { ToastContainer, toast } from 'react-toastify';
+import {useContext} from 'react';
+import { CONTAINER } from './style'
 import StickyHeadTable from './tablerow';
+import projectData from "../../../Context/projectData";
+
 
 const Project = (props) => {
-    const { t } = useTranslation();
-
-    const [projects, setProjects] = useState([]);
-
-    useEffect(()=>{
-        let user = JSON.parse(localStorage.getItem('User'));
-        fetch(`${CONFIG.URLAPI}getProject/${user.email}`,
-        {
-            method: "GET",
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "token": localStorage.getItem('token')
-            },
-        })
-        .then(res => res.json())
-        .then(response => {
-            setProjects(response.project.Project)
-        });    
-    },[])
 
 
-
-
-    // useEffect(()=>{
-    //     setEmail(localStorage.getItem('Email'));
-    //     if(localStorage.getItem('firstname') !== 'undefined'){
-    //         setFirstname(localStorage.getItem('firstname'));
-    //     }
-    // },[])
-
-    
-
+    const { dataProject , setDataProject } = useContext(projectData);
 
     return(
         <div style={props.opacityProject ? enable : disable}>
             <CONTAINER>
-                <StickyHeadTable rows={projects}/>
+                <StickyHeadTable rows={dataProject}/>
             </CONTAINER>
         </div>
     )
@@ -57,21 +24,22 @@ export default Project;
 const enable = {
     opacity : "1",
     transitionDuration : "0.7s",
-    position: 'relative',
+    position: 'absolute',
     width:'100%',
-    height:'400%',
+    top:'60px',
     padding: '2rem 3rem',
-    borderTop: '1rem solid'
-
+    borderTop: '1rem solid',
+    zIndex : '1000'
 };
 
 
 const disable = {
     position:'fixed',
-    right:'-100rem',
+    top:'-100%',
+    width:'100%,',
     opacity :  "0",
     transitionDuration : "0.7s",
-    height : '0'
+    zIndex : '1000'
 };
 
 const input = {

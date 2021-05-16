@@ -3,12 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { Language } from './enum-language';
 import { BUTTONEN , BUTTONFR } from './style'
 
+
 const Lang = () => {
     const { i18n } = useTranslation();
     const [lang, setLang] = useState(i18n.language in Language);
     
     useEffect(()=>{
-        setLang(Language.FR)
+        if(localStorage.getItem('i18nextLng')){
+            setLang(localStorage.getItem('i18nextLng'));
+        }else{
+            setLang(Language.FR)
+        }
     },[])
 
     useLayoutEffect(()=>{

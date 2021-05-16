@@ -3,9 +3,10 @@ import loginImg from "../../../image/login.svg";
 import LoginStyle from './style/index_style';
 import { CONFIG }  from '../../enum-list/enum-list';
 import { CircularProgress } from '@material-ui/core';
+import { withTranslation  } from "react-i18next";
 
 
-export class Login extends React.Component {
+class Login extends React.Component {
 
   constructor(props) {
     super(props);
@@ -16,7 +17,8 @@ export class Login extends React.Component {
         },
         errorMessage:"",
         eventListener: "",
-        timer : true
+        timer : true,
+        timerOut : null
     } 
   }
 
@@ -25,7 +27,7 @@ export class Login extends React.Component {
         if(this.state.timer == true){
           this.handleLogin()
           this.setState({timer:false})
-          setTimeout(() => this.setState({timer:true}),1000)
+          this.timerOut = setTimeout(() => this.setState({timer:true}),1000)
         }
       }
     }
@@ -36,6 +38,7 @@ export class Login extends React.Component {
 
     componentWillUnmount(){
       document.removeEventListener('keypress', this.enterpush);
+      clearTimeout(this.timerOut);
     }
 
     handleLogin = () => {  
@@ -55,13 +58,10 @@ export class Login extends React.Component {
         .then(response => response.json())
         .then((result) => {
             if (result['status'] === "success") {
-                localStorage.setItem('User',  JSON.stringify(result.user));
                 localStorage.setItem('token', result.token);
                 window.location.href ='#/User';
             } else {
-                localStorage.setItem('connected', false);
                 localStorage.setItem('token', '')
-                localStorage.setItem('User', '');
                 this.setState({errorMessage:result.response});
             }
         })
@@ -84,9 +84,10 @@ export class Login extends React.Component {
 
 
     render() {
+      const { t } = this.props;
         return(
           <LoginStyle>
-          <LoginStyle.Header>Login</LoginStyle.Header>
+          <LoginStyle.Header>{t('connexion.translated-text')}</LoginStyle.Header>
           <LoginStyle.Content>
             <LoginStyle.IMGContainer>
               <LoginStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
@@ -97,7 +98,7 @@ export class Login extends React.Component {
                 <LoginStyle.Input type="text" name="email" onChange={this.handleFormChange} placeholder="email"  />
               </LoginStyle.FormGroup>
               <LoginStyle.FormGroup>
-                <LoginStyle.Label htmlFor="password">Password :</LoginStyle.Label>
+                <LoginStyle.Label htmlFor="password">{t('password.translated-text')} :</LoginStyle.Label>
                 <LoginStyle.Input type="password" name="password" onChange={this.handleFormChange} placeholder="password" />
               </LoginStyle.FormGroup>
             </LoginStyle.Form>
@@ -105,11 +106,13 @@ export class Login extends React.Component {
           </LoginStyle.Content>
           <LoginStyle.Footer>
             <LoginStyle.Btn  className="btn" onClick={this.handleLogin.bind(this)}>
-              Login
+            {t('connexion.translated-text')}
             </LoginStyle.Btn>
           </LoginStyle.Footer>
-            <LoginStyle.Href onClick={this.forgetMdp}> Forgot Password ?</LoginStyle.Href> 
+            <LoginStyle.Href onClick={this.forgetMdp}> {t('forgetMdpText.translated-text')} ?</LoginStyle.Href> 
         </LoginStyle>
         );
     }
 }
+
+export default withTranslation()(Login);

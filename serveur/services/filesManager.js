@@ -1,8 +1,10 @@
 const fs = require('fs');
 const __Config =require('../config.json');
-
+var path = require('path');
+const File = require('../models/Files');
 
 async function getFilesList(email, url){
+    console.log("here : " + email, url)
     return new Promise((acc,rej)=>{
         let arrayList = [];
         let dir = `${__Config.Folder.path}${email}/${url}`;

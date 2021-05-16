@@ -3,13 +3,14 @@ import loginImg from "../../../image/login.svg";
 import RegisterStyle from './style/index_style';
 import { CONFIG }  from '../../enum-list/enum-list';
 import { CircularProgress } from '@material-ui/core';
+import { withTranslation  } from "react-i18next";
 
 var regularExpressionStrong = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()+=-\?;,./{}|\":<>\[\]\\\' ~_]).{8,}/;
 var regularExpressionMiddle = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
 
 
-export class Register extends React.Component {
-    constructor(props) {
+class Register extends React.Component {
+      constructor(props) {
         super(props);
         this.state = {
             loginParams: {
@@ -113,9 +114,10 @@ export class Register extends React.Component {
 
 
     render() {
+      const { t } = this.props;
         return(
           <RegisterStyle>
-          <RegisterStyle.Header>Register</RegisterStyle.Header>
+          <RegisterStyle.Header>{t('register.translated-text')}</RegisterStyle.Header>
           <RegisterStyle.Content>
           <RegisterStyle.IMGContainer>
               <RegisterStyle.ImgLogin alt ="ImgLogin" src={loginImg} />
@@ -126,24 +128,27 @@ export class Register extends React.Component {
                 <RegisterStyle.Input type="text" name="email" onChange={this.handleFormChange} placeholder="email" />
               </RegisterStyle.FormGroup>
               <RegisterStyle.FormGroup>
-                <RegisterStyle.Label htmlFor="password">Password</RegisterStyle.Label>
+                <RegisterStyle.Label htmlFor="password">{t('password.translated-text')}</RegisterStyle.Label>
                 <RegisterStyle.Input  style={{marginBottom: '1px'}} type="password" name="password" onChange={this.handleFormChange} placeholder="password" />
-                <span id='StrengthPassword'  style={{ transitionDuration: '330ms', marginBottom: '30px', height : '10px' ,     borderRadius: '10px'}} ></span>
+                <span id='StrengthPassword'  style={{ transitionDuration: '330ms', marginBottom: '30px', height : '3px' ,     borderRadius: '10px'}} ></span>
               </RegisterStyle.FormGroup>
               <RegisterStyle.FormGroup>
-                <RegisterStyle.Label htmlFor="password"> Verify password :</RegisterStyle.Label>
+                <RegisterStyle.Label htmlFor="password">{t('password.translated-text')}</RegisterStyle.Label>
                 <RegisterStyle.Input  style={{marginBottom: '1px'}} type="password" name="password1" onChange={this.handleFormChange} placeholder="password" />
-                <span id='checkequals'  style={{ transitionDuration: '330ms', marginBottom: '30px', height : '10px' , borderRadius: '10px'}} ></span>
+                <span id='checkequals'  style={{ transitionDuration: '330ms', marginBottom: '30px', height : '2px' , borderRadius: '3px'}} ></span>
               </RegisterStyle.FormGroup>
             </RegisterStyle.Form>
             <RegisterStyle.Error>{this.state.errorMessage}</RegisterStyle.Error>
           </RegisterStyle.Content>
           <RegisterStyle.Footer className="footer">
             <RegisterStyle.Btn  className="btn" onClick={this.handleRegister}>
-            Sign Up !
+              {t('Signup.translated-text')} !
             </RegisterStyle.Btn>
           </RegisterStyle.Footer>
         </RegisterStyle>
         );
     }
 }
+
+
+export default withTranslation()(Register);

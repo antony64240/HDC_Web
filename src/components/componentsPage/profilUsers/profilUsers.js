@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect , useContext , useDidMountEffect , useRef} from 'react';
 import EmailValidator from 'email-validator';
 import { TextField , Button } from '@material-ui/core';
 import {TABLE, CONTAINER , ROW , COLUMN , TextTitle , P  } from './style'
@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { CONFIG }  from '../../enum-list/enum-list';
 import { CircularProgress } from '@material-ui/core';
 import { ToastContainer, toast } from 'react-toastify';
-
+import UserData from "../../../Context/UserData";
 
 
 const regNumber=/^[0-9]{1,5}$/;
@@ -15,94 +15,115 @@ const url=`https://geo.api.gouv.fr/communes?nom=`;
 
 const ProfilUsers = (props) => {
     const { t } = useTranslation();
-    
-    const [User, setUser] = useState({
-        email : "",
-        firstname : "",
-        compagny : "",
-        address : "",
-        city : "",
-        phone : "",
-        areacode : "",
-        lastname : ""
-    });
-    const [disabled, setdisabled] = useState(Boolean)
-
-
+    const { User , setUser } = useContext(UserData);
+    const [disabled, setdisabled] = useState(Boolean); 
+    const [count, setCount] = useState(0);
+    const [AreaCode, setAreaCode] = useState(User.areacode)
+    const [submit , setSubmit] = useState(Number);
     const [errorMessage, seterrorMessage] = useState(""); 
+    const firstRender = useRef(true);
 
+  
     const Submit = () => {  
+        setUser({ ...User , areacode : AreaCode})
         seterrorMessage(<CircularProgress/>)
-          fetch(`${CONFIG.URLAPI}UpdateUser`, {
-              method: "POST",
-              headers: {
-                  "Content-type": "application/json; charset=UTF-8",
-                  "token": localStorage.getItem('token')
-              },
-              body: JSON.stringify(
-                {
-                  User : User
-                }
-            )
-          })
-          .then(response => response.json())
-          .then((result) => {
-              if (result['status'] === "success") {
-                localStorage.setItem('User', JSON.stringify(User));
-                seterrorMessage(result.response);
-              } else {
-                seterrorMessage(result.response);
-                toast.error('Perte de connexion, vous allez être redirigés.')
-                setTimeout(()=> window.location.href = "#/Login" ,2000)
-              }
-          })
-      }
+        setSubmit(submit+1)
+    }
 
-    const setData = () =>{
-        let user = JSON.parse(localStorage.getItem('User'));
-        setUser( user );
+    const fetchData = () => {
+        if(count !== 0){
+            fetch(`${CONFIG.URLAPI}UpdateUser`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "token": localStorage.getItem('token')
+                },
+                body: JSON.stringify(
+                    {
+                    User : User
+                    }
+                )
+            })
+            .then(response => response.json())
+            .then((result) => {
+                console.log(result)
+                if (result['status'] === "success") {
+                    seterrorMessage(result.response);
+                    localStorage.setItem('token', result.token);
+                } else {
+                    seterrorMessage(result.response);
+                    toast.error('Perte de connexion, vous allez être redirigés.');
+                    setTimeout(()=> window.location.href = "#/Login" ,2000);
+                }
+            })
+        }else{
+            seterrorMessage(t('Datainchange.translated-text'));
+        }
     }
 
 
     useEffect(()=>{
-       setData()
-    },[1])
+        if(!firstRender.current){
+            fetchData()
+        }
+    },[submit])
+
+    useEffect(() => {
+        firstRender.current = false;
+    },[]);
 
     const Changeform = (e) =>{
-        console.log(e)
         const { name , value }  = e.target;
         setUser({...User  , [name] : value});
+        setCount(count+1);
     }
 
+    const setZIPCODE = () =>{
+        if(count !== 0){
+            fetch(url+User.city, {
+                headers: {Accept: 'application/json'}
+            })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    var tab = []
+                    result.map((item,i) => tab.push(item))
+                    if(tab.length > 0 && tab.length<100){
+                        if(tab[0].codesPostaux){
+                            let i = 0;
+                            for(let data of tab){
+                                if(data.nom === User.city){
+                                    setAreaCode(tab[i].codesPostaux[0])
+                                }
+                                i++;
+                            }
+                           
+                        }
+                    }else{
+                        setAreaCode('')
+                    } 
+                }
+            )
+        }
+    }
+
+    useEffect(async()=>{
+        setZIPCODE()
+    },[User.city]);
+
+
     useEffect(()=>{
-        console.log(User)
-    },[User])
-
-    // sendrea<(()=>{
-    //     fetch(url+city,{
-    //             headers: {Accept: 'application/json'}
-    //         })
-    //         .then(res => res.json())
-    //         .then(
-    //             (result) => {
-    //                 var tab = []
-    //                 result.map((item,i) => tab.push(item))
-    //                 if(tab.length > 0 && tab.length<100){
-    //                     if(typeof tab[0].codesPostaux !== 'undefined'){
-    //                         setAreacode(tab[0].codesPostaux[0])
-    //                     }
-    //                 }else{
-    //                     setAreacode('')
-    //                 }
-    //             }
-    //         )
-    // },[city])
-
-
-
-    // useEffect(()=>{
-    //     if(areacode.length===1){if(areacode.match(regNumber)===null){setAreacode(areacode.substr(areacode.length))}}else{if(areacode.match(regNumber)===null){setAreacode(areacode.substr(0,areacode.length-1))}}   
-    // },[areacode]);
+        if(AreaCode){
+            if(AreaCode.match(regNumber)===null)
+                {
+                    setAreaCode(AreaCode.substr(AreaCode.length))
+               }
+                else{
+                    if(AreaCode.match(regNumber)===null){
+                        setAreaCode(AreaCode.substr(0,AreaCode.length-1))
+                    }}   
+        }
+        },[AreaCode]);
 
     return(
         <div style={props.opacityProfil ? enable : disable}>
@@ -112,18 +133,17 @@ const ProfilUsers = (props) => {
             <TABLE align="center">
                 <COLUMN><TextField style={input} name="firstname" label={t('firstname.translated-text')} type="text" value={User.firstname} onChange={(e) => Changeform(e)} /></COLUMN>
                 <COLUMN><TextField style={input} name="lastname" label={t('lastname.translated-text')} type="text" value={User.lastname} onChange={(e) => Changeform(e)} /></COLUMN>
-                <COLUMN><TextField style={input} name="email" disabled label="Email" type="text" value={User.email} onChange={(e) => Changeform(e)}/></COLUMN>
+                <COLUMN><TextField style={input} name="email" label="Email" disabled type="text" value={User.email} onChange={(e) => Changeform(e)}/></COLUMN>
                 <COLUMN><TextField style={input} name="compagny" label={t('compagny.translated-text')} type="text" value={User.compagny}  onChange={(e) => Changeform(e)} /></COLUMN>
                 <COLUMN><TextField style={input} name="city" label={t('city.translated-text')} type="text" value={User.city} onChange={(e) => Changeform(e)} /></COLUMN>
                 <COLUMN><TextField style={input} name="address" label={t('address.translated-text')} type="text" value={User.address} onChange={(e) => Changeform(e)} /></COLUMN>
-                <COLUMN><TextField style={input} name="areacode" label={t('CityAreaCode.translated-text')} value={User.areacode} onChange={(e) => Changeform(e)}/></COLUMN>
+                <COLUMN><TextField style={input} name="areacode" label={t('CityAreaCode.translated-text')} value={AreaCode} onChange={(e) => setAreaCode(e.target.value)} /></COLUMN>
                 <COLUMN><TextField style={input} name="phone" label={t('phone.translated-text')} value={User.phone} type="text" onChange={(e) => Changeform(e)}/></COLUMN>
             </TABLE>
             <div>{errorMessage}</div>
             <Button onClick={() => Submit()} disabled={disabled} style={{width:'20vh'}} variant="contained" color="primary">Enregister</Button>
             <P>{t('TextPersonnalInfo.translated-text')}</P>
             </CONTAINER>
-            
         </div>
     )
 }
@@ -133,20 +153,20 @@ export default ProfilUsers;
 const enable = {
     opacity : "1",
     transitionDuration : "0.7s",
-    position: 'relative',
+    position: 'absolute',
     width:'100%',
-    height:'400%',
+    top:'60px',
     padding: '2rem 3rem',
     borderTop: '1rem solid'
 };
 
 
 const disable = {
-    position:'fixed',
-    right:'-100rem',
+    position: "absolute",
+    top:'-100%',
+    width:'100%,',
     opacity :  "0",
     transitionDuration : "0.7s",
-    height : '0'
 };
 
 const input = {

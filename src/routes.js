@@ -7,7 +7,7 @@ import Connexion from './Pages/connexion/connexion';
 import VerifyEmail from './Pages/validation/validation'; 
 import VerifyProject from './Pages/validation/validationproject'; 
 import RecoveryPassword from './Pages/validation/passRecovery';
-import {FormSelect} from './test'; 
+import AdminBoard from './Pages/boardAdmin/boardAdmin';
 
 
 const Routes = () => (
@@ -17,12 +17,12 @@ const Routes = () => (
                 <Route path="/User" component={User}/>
                 <Route exact path="/"  component={Accueil}/>
                 <Route path="/Service" component={Service}/>
-                <Route path="/Activite" component={Activite}/>
+                <Route path="/SecteurActivite" component={Activite}/>
                 <Route path="/Login" component={Connexion}/>
                 <Route path="/VerifyEmail" component={VerifyEmail}/>
-                <Route path="/LoginForm" component={FormSelect}/>
                 <Route path='/valideProject' component={VerifyProject}/>
                 <Route path='/recovery' component={RecoveryPassword}/>
+                <Route path='/Adminboard' component={AdminBoard}/>
             </Switch>
         </HashRouter>
 

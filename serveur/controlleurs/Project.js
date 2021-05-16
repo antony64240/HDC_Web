@@ -1,91 +1,69 @@
 const ProjectShema = require('../models/projet');
-const Users = require('../models/Users');
 const mailSender = require('../services/mailSender');
-let uuid = require('uuid');
 const { jsPDF } = require('jspdf');
 var encoding = require('encoding');
 const fs = require('fs'); 
 const img  = require('../models/image');
-const __config = require('../config.json')
+const __config = require('../config.json');
+const manageToken = require('../middleware/manageToken');
+const projectManager = require('../services/projectManager');
 
-exports.createProject = async (req, res, next) =>
+exports.createProject = async (req, res) =>
 {
-    let dataProject = new ProjectShema({  
-        Author:req.body.email,   
-        Name: req.body.nom,
-        Description: req.body.descriptif,
-        Date : new Date().valueOf(),
-        DateExp : req.body.datefin,
-        Valider : false,
-        Devis : false,
-        Token : uuid.v4()
-      });
-    ProjectShema.create(dataProject, function(err, search) {
-        console.log(search)
-        if(search!=null){
-            Users.findOneAndUpdate({Email:req.body.email},{$push:{Project : search._id}}, function(err, update) {
-                console.log(err)
-                if(err) {              
-                    return res.status(401).json({response: 'Erreur Interne, désolé du désagrément.', status: 'error'});
-                } else {
-                    new mailSender().sendProject(req.body.email,search,(success, err)=>{
-                        if(err){
-                            console.log(err)
-                            return res.status(201).json({response: 'Erreur Interne, désolé du désagrément.', status: 'error'});
-                        }else{
-                            return res.status(201).json({response: 'Done.', status: 'success'});
-                        }
-                    })
-                }
-            });
-        }else{
-            return res.status(401).json({response: 'Erreur Interne.', status: 'error'});       
-        }
-    });
+    const { email } = manageToken.getData(req.headers.token);
+    const  project  = req.body;
+    try{
+        const result = await projectManager.createproject(email, project);
+        res.status(201).json(result);
+    }
+    catch(err){
+        res.status(500).json(err);
+    } 
 }
 
-
-exports.getProjectbyUsers = async (req, res, next) =>
+exports.getProjectbyUsers = async (req, res) =>
 {
-    Users.findOne({ Email : req.params.Email }).
-        populate('Project').
-            exec(function (err, story) {
-                if (err) return handleError(err);
-                return res.status(201).json({response: 'Done.', status: 'success', project: story});
-    });
+    const { email } = manageToken.getData(req.headers.token);
+    try{
+        const result = await projectManager.getprojectbyUser(email);
+        res.status(201).json(result)
+    }catch(err){
+        res.status(500).json(err)
+    }
 }
 
 
 exports.getProject = async (req, res, next) =>
 {   
-    ProjectShema.findOne({ Token : req.params.token}, (err, search) => {
-        if(err){
-            return res.status(401).json({response: 'Projet introuvable.', status: 'error'});       
-        }else{
-            Users.findOne({Email: search.Author}, function(err, user) {
-                if(err) {              
-                    return res.status(401).json({response: 'Erreur Interne, désolé du désagrément.', status: 'error'});
-                } else {
-                    return res.status(201).json({response: 'Done.', status: 'success', project: search , user : user });
-                }
-            })
-        }
-    })
+    const { token } = req.params;
+    try{
+        const result = await projectManager.getproject(token);
+        res.status(201).json(result)
+    }catch(err){
+        res.status(500).json(err)
+    }
 }
 
+
+exports.getAllProjects = async (req, res, next) =>
+{   
+    try{
+        const result = await projectManager.getAllProjects();
+        res.status(201).json(result)
+    }catch(err){
+        res.status(500).json(err)
+    }
+}
 
 
 exports.createDevis = async (req, res, next) =>
 {     
-    let rows = req.body.data;
-    let project = req.body.project;
-    let user = req.body.user;
+    const { project , user , data } = req.body;
 
     ProjectShema.findById(project._id,(err, search)=>{
         search.Devis = true;
         search.Valider = true
         if(err){
-            console.log(err)
             return res.status(401).json({response: 'Projet introuvable.', status: 'error'});
         }else{
             const doc = new jsPDF({
@@ -102,7 +80,7 @@ exports.createDevis = async (req, res, next) =>
             doc.text(`${new Date().getUTCFullYear()}`, 142, 197);
             doc.text(`${user.FirstName} ${user.LastName}`, 400, 70)
             doc.setFontSize(8);
-            rows.forEach((elem , index) => {
+            data.forEach((elem , index) => {
                 if(elem.price!=undefined && elem.heure !=undefined){
                     if(elem.description.length < 36){
                         doc.text(`-${elem.description}`, 70, 260+(25*index));
@@ -116,12 +94,11 @@ exports.createDevis = async (req, res, next) =>
                     doc.text(`${Math.floor(elem.heure*elem.price)}€`, 475, 260+(25*index))
                 }
             });
-            var data = doc.output()
-            var buffer = encoding.convert(data, "Latin_1") 
+            const dataImg = doc.output()
+            const buffer = encoding.convert(dataImg, "Latin_1") 
             fs.writeFileSync(`${__config.Folder.path}${user.Email}/devis/${project._id}.pdf`, buffer, 'binary');
             ProjectShema.updateOne({_id:project._id}, search, (err, success)=>{
                 if(err){
-                    console.log(err)
                     return res.status(401).json({response: 'Erreur Interne, désolé du désagrément.', status: 'error'});     
                 }else{
                     new mailSender().sendMailestimate(project.Author, project, (err,succes) =>{

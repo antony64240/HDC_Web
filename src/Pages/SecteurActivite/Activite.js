@@ -14,7 +14,6 @@ class Activite extends Component {
       
       <div >
        <Header/>
-        
       </div>
     );
   }

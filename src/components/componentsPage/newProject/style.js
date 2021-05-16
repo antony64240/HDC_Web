@@ -1,7 +1,7 @@
 
 import styled from 'styled-components';
 export const CONTAINER = styled.div`
-    
+    padding-left:5vh;
 
 `;
 export const TextTitle = styled.p`

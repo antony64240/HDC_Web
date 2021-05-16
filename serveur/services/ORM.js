@@ -1,9 +1,12 @@
 const Users = require('../models/Users');
 const preRegisterSchema = require('../models/PreRegister');
-let uuid = require('uuid');
 const mailSender = require('../services/mailSender');
 const bcrypt = require('bcrypt');
 const manageToken = require('../middleware/manageToken');
+const EmailValidator =require('email-validator');
+const Escape = require('escape-html');
+let uuid = require('uuid');
+const UserSchema = require('../models/Users');
 
 async function updateUser(User){
     return new Promise((acc,rej)=>{
@@ -20,7 +23,8 @@ async function updateUser(User){
                     if(err) {              
                         return rej(err)
                     } else {
-                        return acc();
+                        User.tokenExpiration = Date.now() + 300000;
+                        return acc({response : "done" , status : "success" , token : manageToken.generateEncode(User)});
                     }
                 });
             }else{
@@ -48,7 +52,7 @@ async function forgetPassword(Email){
                                     if(err){
                                         return rej({response: 'Erreur Interne, désolé du désagrément.', status: 'error'});
                                     }else{
-                                        return acc();
+                                        return acc({response: 'Email envoyé.', status: 'success'});
                                     }
                                 });
                             }
@@ -100,9 +104,10 @@ async function authentification(Email, Password){
                                                         city: search.City,
                                                         compagny: search.Compagny,
                                                         address: search.Address,
+                                                        role: search.Role,
                                                         tokenExpiration: Date.now() + 3000000
                                                     }
-                                                    acc({response: 'Vous êtes maintenant connecté', status: 'success', token: new manageToken().generateEncode(userData), user: userData});
+                                                    acc({response: 'Vous êtes maintenant connecté', status: 'success', token: manageToken.generateEncode(userData)});
                                                 } else {
                                                     rej({response: 'Votre mot de passe est incorrect', status: 'error'});
                                                 }
@@ -123,6 +128,8 @@ async function authentification(Email, Password){
     })
 }
 
+
+
 async function recoverPassword(token , Password){
     return new Promise((acc,rej)=>{
         bcrypt.hash(Password, 10, function(err, hash){
@@ -136,7 +143,6 @@ async function recoverPassword(token , Password){
                         rej({response: 'Token introuvable', status: 'error'});
                     }else{
                         search.Password = hash
-                        // search.Token = ""
                         Users.updateOne({Email : search.Email} ,search, (err, success) => {
                             if(err){
                                 rej({response: 'Erreur interne', status: 'error'});
@@ -151,7 +157,7 @@ async function recoverPassword(token , Password){
     })
 }
 
-async function createUser(email , password){
+async function createUser(password, email){
     return new Promise((acc,rej)=>{
         if(!email){
             rej({response : 'Veuillez entrer une adresse mail' , status: '201'});
@@ -200,10 +206,29 @@ async function createUser(email , password){
     }); 
 }
 
-module.exports={
+
+async function getUsers(){
+    return new Promise((acc,rej)=>{
+        UserSchema.find().then(
+            (data) => {
+            console.log(data)
+              acc(data);
+            }
+          ).catch(
+            (error) => {
+              rej({
+                error: error
+              });
+            }
+          );
+    })
+}
+
+module.exports = {
     updateUser,
     forgetPassword,
     authentification,
     recoverPassword,
-    createUser
+    createUser,
+    getUsers
 }

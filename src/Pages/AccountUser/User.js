@@ -11,7 +11,8 @@ import IconMenu from '../../image/home.png';
 import { IMG , HEADER } from './style';
 import { Pages } from './enum';
 import  LANG  from '../../language/Lang';
-
+import UserData from '../../Context/UserData'
+import projectData from '../../Context/projectData';
 
 const User = () => {
 
@@ -20,6 +21,9 @@ const User = () => {
    const [isLoadedOngletMyProject, setisLoadedOngletMyProject] = useState(false);
    const [loadPage, SetloadPage] = useState(false); 
    const [anchorEl, setAnchorEl] = React.useState(null);
+   const [User, setUser] = useState({});
+   const [dataProject, setDataProject] = useState([]);
+   const [UpdateProject, setProject] = useState(true);
 
    const handleClick = (event) => {
      setAnchorEl(event.currentTarget);
@@ -45,57 +49,73 @@ const User = () => {
       }
    ]
 
-   const SendReq = () => {
 
-      if( localStorage.getItem("User") !== null && localStorage.getItem("User") !== '' ){
-         let User = JSON.parse(localStorage.getItem("User"));
+   const getPermission = () => {
       fetch(`${CONFIG.URLAPI}CheckToken`, {
           method: "GET",
           headers: {
               "Content-type": "application/json; charset=UTF-8",
               Token: localStorage.getItem('token')
           }
-      }).then((result) => {
-         console.log(result.status)
-            if(result.status!==201){
-               window.location.href ='#/Login';
-            }else{
-               if(result.status===201){
-                  SetloadPage(true)
+      }).then((result) =>{
+         if(result.status === 210){
+                  window.location.href = "#/Adminboard";
+         }else{
+            result.json()
+            .then(data =>{
+               if(data.status === "success"){
+                  setUser(data.user);
+                  SetloadPage(true);
+                }else{
+                  window.location.href = "#/Login";
                }
-            }
-           
+            })
          }
-      );
-      }else{
-         window.location.href ='#/Login';
-      }
+         })
   };
 
    useEffect(() => {
-      SendReq()
+      getPermission();
    },[1]);
+
+
+   
+   useEffect(()=>{
+      if(loadPage){
+         fetch(`${CONFIG.URLAPI}getProject`,
+         {
+             method: "GET",
+             headers: {
+                 "Content-type": "application/json; charset=UTF-8",
+                 "token": localStorage.getItem('token')
+             },
+         })
+         .then(res => res.json())
+         .then(response => {
+             setDataProject(response.project.Project)
+         });         
+      }
+   },[UpdateProject,loadPage])
 
    const HandleChange = (event) => {
       if(event === Pages.NEWPROJECT){
          setisLoadedOngletUser(false);
          setisLoadedOngletMyProject(false);
-         setTimeout(()=>setisLoadedOngletNewProject(true),1000)
+         setTimeout(()=>setisLoadedOngletNewProject(true),500)
       }
       if(event === Pages.PROFILS){
          setisLoadedOngletNewProject(false);
          setisLoadedOngletMyProject(false);
-         setTimeout(()=>setisLoadedOngletUser(true),1000)
+         setTimeout(()=>setisLoadedOngletUser(true),500)
       }
       if(event === Pages.LOGOUT){
-         localStorage.setItem("User", '');
          localStorage.setItem("token", '');
          window.location.href ='#/Login';
       }
       if(event === Pages.PROJECT){
          setisLoadedOngletNewProject(false);
          setisLoadedOngletUser(false);
-         setTimeout(()=>setisLoadedOngletMyProject(true),1000)
+         setTimeout(()=>setisLoadedOngletMyProject(true),500)
       }
       handleClose()
    }
@@ -122,14 +142,19 @@ const User = () => {
                   })}
                </Menu>
             </HEADER>
-                  <OngletProfilUsers opacityProfil={isLoadedOngletUser}  />
-                  <OngletNouveauProjet opacityProject={isLoadedOngletNewProject} />
-                  <OngletMyProjet opacityProject={isLoadedOngletMyProject} />     
-      </div>
+            <projectData.Provider value={{dataProject : dataProject, setDataProject : setDataProject}}>
+               <UserData.Provider value={{User:User, setUser:setUser}}>
+                     <OngletProfilUsers opacityProfil={isLoadedOngletUser} />
+                     <OngletNouveauProjet opacityProject={isLoadedOngletNewProject} setProject={setProject} UpdateProject={UpdateProject} />
+                     <OngletMyProjet opacityProject={isLoadedOngletMyProject} />     
+               </UserData.Provider>
+            </projectData.Provider>
+      </div>   
 
       );
    }
 }
+
 
 export default User;
 

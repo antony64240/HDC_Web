@@ -18,7 +18,7 @@ var preRegisterSchema = mongoose.Schema({
 
 
 preRegisterSchema.pre('save', function(next){
-  var user = this;
+  let user = this;
   bcrypt.hash(user.Password, 10, function(err, hash){
       if (err) {
           return next(err);

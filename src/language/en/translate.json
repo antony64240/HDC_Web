@@ -49,24 +49,28 @@
     },
     "connexion" : {
         "translate-button": "EN",
-        "translated-text": "connection"
+        "translated-text": "Login"
     },
     "register" : {
         "translate-button": "EN",
         "translated-text": "Register"
     },
-    "password :" : {
+    "password" : {
         "translate-button": "EN",
-        "translated-text": "Password :"
+        "translated-text": "Password"
+    },
+    "Signup" : {
+        "translate-button": "FR",
+        "translated-text": "Sign up"
     },
     "forgetMdpText" : {
         "translate-button": "EN",
-        "translated-text": "Password forgotten?"
+        "translated-text": "Password forgotten"
     }
     ,
     "Emailforgetpassword" : {
         "translate-button": "EN",
-        "translated-text": "Enter your email :"
+        "translated-text": "Enter your email"
     },
     "recover" : {
         "translate-button": "EN",
@@ -111,5 +115,46 @@
     "PersonnalInfo" : {
         "translate-button": "EN",
         "translated-text": "Personal informations :"
+    },
+    "filesTransfer" : {
+        "translate-button": "EN",
+        "translated-text": "Please import a .Zip file containing the elements necessary for the study of your project."
+    },
+    "StudyProjectp1" : {
+        "translate-button": "EN",
+        "translated-text": "Your project will be studied within 48 hours after depositing it. A quote will be sent to you at the following address:"
+    },
+    "StudyProjectp2" : {
+        "translate-button": "EN",
+        "translated-text": "After project studies and delivery capacity. You will be able to find in your customer space your files to deposit as well as the estimate. In the event of a possible agreement, you will also be able to follow the progress of this same online deposit."
+    },
+    "descNewProject" : {
+        "translate-button": "EN",
+        "translated-text": "Description of the project:"
+    },
+    "delay" : {
+        "translate-button": "EN",
+        "translated-text": "Delivery delay :"
+    },
+    "newproject" : {
+        "translate-button": "EN",
+        "translated-text": "New Project :"
+    },
+    "confirm" : {
+        "translate-button": "EN",
+        "translated-text": "Confirm"
+    },
+    "Datainchange" : {
+        "translate-button": "EN",
+        "translated-text": "No data changed"
+    },
+    "Uploadlabel" : {
+        "translate-button": "EN",
+        "translated-text": "Upload you files :"
+    },
+    "Upload" : {
+        "translate-button": "EN",
+        "translated-text": "Upload"
     }
+
 }

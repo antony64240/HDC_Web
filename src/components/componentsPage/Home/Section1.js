@@ -95,6 +95,7 @@ const IMG = styled.img`
   transform: translateX(${({ animate }) => (animate ? "0" : "-100vw")});
   transition: transform 4s;
   z-index : -1000;
+  
 `;
 
 const Img = styled.img`

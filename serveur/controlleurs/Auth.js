@@ -1,49 +1,48 @@
 const ORM = require('../services/ORM')
+const manageToken = require('../middleware/manageToken');
 
-authentification = async (req, res, next) => {
-    let Email = req.body.email,
-        Password = req.body.password;
+
+authentification = async (req, res) => {
+    const { email , password } = req.body;
     try {
-        let result = await ORM.authentification(Email, Password);
-        res.status(201).json({response: result.response, status: result.status , token:result.token , user : result.user})
+        let result = await ORM.authentification(email, password);
+        res.status(201).json(result)
     }catch(err){
-        res.status(401).json({response: err.response, status: err.status})
+        res.status(401).json(err)
     }
 }
 
 
-forgotPassword = async (req, res, next) => {
-    let Email = req.headers.email;
+forgotPassword = async (req, res) => {
+    const { email } = manageToken.getData(req.headers.token);
     try {
-        await ORM.forgetPassword(Email)
-        res.status(201).json({response: "Done", status: "success"})
+        const result = await ORM.forgetPassword(email)
+        res.status(201).json(result)
     }catch (err) {
-        res.status(401).json({response: err.response, status: err.status})
+        res.status(401).json(err)
     }
 }
 
 
 
 
-recoverPassword = async (req, res, next) => {
-    let token = req.body.token,
-        Password = req.body.password;
+recoverPassword = async (req, res) => {
+    const { token , password } = req.body;
     try {
-        await ORM.recoverPassword(token , Password)
-        res.status(201).json({response: "Done", status: "success"})
+        const result = await ORM.recoverPassword(token , password)
+        res.status(201).json(result)
     }catch (err) {
-        res.status(401).json({response: err.response, status: err.status})
+        res.status(401).json(err)
     }
 }
 
 
-updateUser = async (req, res, next) => {
+updateUser = async (req, res) => {
     try {
-        await ORM.updateUser(req.body.User)
-        res.status(201).json({response: 'Done.', status: 'success'});
-
+        const result  = await ORM.updateUser(req.body.User)
+        res.status(201).json(result);
     } catch (err) {
-        res.status(401).json({response: 'Erreur Interne.', status: 'error'});
+        res.status(401).json(err);
     }
 }
 

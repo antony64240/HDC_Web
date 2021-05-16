@@ -3,8 +3,10 @@ const router = express.Router()
 const FileUser = require('../controlleurs/Files');
 const SignUser = require('../controlleurs/Signup');
 const AuthUser = require('../controlleurs/Auth');
-const Project = require('../controlleurs/Project')
-const { checkToken , verifyToken } = require("../controlleurs/TokenValidation");
+const Project = require('../controlleurs/Project');
+const Todo = require('../controlleurs/todo');
+
+const { checkToken , verifyToken , checkRules } = require("../controlleurs/TokenValidation");
 
 
 
@@ -17,19 +19,25 @@ router.get('/ForgotPassword', AuthUser.forgotPassword);
 
 
 //ADMINROUTE
-router.get('/Users', SignUser.getUsers);
-router.delete('/DeletUser/:id', SignUser.DeletOneUser);
-router.post('/createpdf', Project.createDevis)
-
+router.get('/Users', checkRules , SignUser.getUsers);
+router.delete('/DeletUser/:id', checkRules , SignUser.DeletOneUser);
+router.post('/createpdf', checkRules , Project.createDevis);
+router.get('/getAllProjects' , checkRules , Project.getAllProjects);
+router.get('/filesListAdmin' , checkRules , FileUser.filesListAdmin);
+router.get('/downloadAdmin' , checkRules , FileUser.downloadFilesAdmin);
 
 //USERROUTE
-router.get('/Download', checkToken, FileUser.downloadFiles)
-router.get('/ListFichier',checkToken, FileUser.filesList);
 router.get('/CheckToken',verifyToken);
+router.post('/Todo' , checkToken , Todo.addTodo);
+router.put('/Todo', checkToken , Todo.updateTodo);
+router.delete('/Todo', checkToken , Todo.deletTodo);
+router.get('/Download', checkToken, FileUser.downloadFiles);
+router.get('/ListFichier',checkToken, FileUser.filesList);
+router.delete('/ListFichier',checkToken, FileUser.deletefiles);
 router.post('/UploadFile', FileUser.UploadFile);
 router.post('/UpdateUser',checkToken, AuthUser.updateUser);
 router.post('/newProject',checkToken, Project.createProject);
-router.get('/getProject/:Email',checkToken, Project.getProjectbyUsers);
+router.get('/getProject',checkToken, Project.getProjectbyUsers);
 router.get('/Project/:token', Project.getProject );
 
 module.exports = router;

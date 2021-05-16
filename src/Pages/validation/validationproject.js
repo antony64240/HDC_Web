@@ -43,10 +43,12 @@ export default class AddInvoice extends Component {
         fetch(`http://localhost:3001/api/Project/${token}`, {
             method: "GET",
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                token : localStorage.getItem('token')
             }
         }).then(response => response.json())
         .then((result) => {
+            console.log(result)
              if (result['status'] === "success"){
                 result.project.DateExp = `${new Date(parseInt(result.project.DateExp)).getUTCDate()}/${new Date(parseInt(result.project.DateExp)).getUTCMonth()+1}/${new Date(parseInt(result.project.DateExp)).getFullYear()}`
                 result.project.Date = `${new Date(result.project.Date).getUTCDate()}/${new Date(result.project.Date).getUTCMonth()+1}/${new Date(result.project.Date).getFullYear()}`
@@ -77,7 +79,8 @@ export default class AddInvoice extends Component {
         fetch(`http://localhost:3001/api/createpdf`, {
             method: "POST",
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                token : localStorage.getItem('token')
             },
             body : JSON.stringify(
                 {
@@ -91,7 +94,7 @@ export default class AddInvoice extends Component {
              if (result['status'] === "success"){
                 console.log(result.response)
             }else{
-                console.log(result.response)
+                console.log(result)
             } 
         })
     }

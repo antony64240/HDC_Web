@@ -6,11 +6,11 @@ export const CONTAINER = styled.div`
 `;
 
 export const TABLE = styled.div`
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-grid-gap: 0.2rem;
-margin-right: auto;
-margin-left: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 0.2rem;
+    margin-right: auto;
+    margin-left: auto;
 `;
 
 

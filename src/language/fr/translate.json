@@ -56,18 +56,22 @@
         "translate-button": "FR",
         "translated-text": "Inscription"
     },
-    "password :" : {
+    "password" : {
         "translate-button": "FR",
-        "translated-text": "Mot de passe :"
+        "translated-text": "Mot de passe"
     },
     "forgetMdpText" : {
         "translate-button": "FR",
-        "translated-text": "Mot de passe oublié?"
+        "translated-text": "Mot de passe oublié"
+    },
+    "Signup" : {
+        "translate-button": "FR",
+        "translated-text": "S'inscrire"
     }
     ,
     "Emailforgetpassword" : {
         "translate-button": "FR",
-        "translated-text": "Entrer votre email :"
+        "translated-text": "Entrer votre email"
     },
     "recover" : {
         "translate-button": "FR",
@@ -112,5 +116,45 @@
     "PersonnalInfo" : {
         "translate-button": "FR",
         "translated-text": "Données personnelles :"
+    },
+    "filesTransfer" : {
+        "translate-button": "FR",
+        "translated-text": "Merci de bien importer un fichier .Zip contenant les élèments nécessaires à l'études de votre projet."
+    },
+    "StudyProjectp1" : {
+        "translate-button": "FR",
+        "translated-text": " Votre projet sera étudié dans un délai de 48 heures après dépôts de celui-ci. Un devis vous sera envoyé à l'adresse suivante : "
+    },
+    "StudyProjectp2" : {
+        "translate-button": "FR",
+        "translated-text": "Après études de projet et capacité de livraison. Vous pourrez retrouver dans votre espace client vos fichiers déposer ainsi que le devis. Dans le cas d'un possible accord, vous allez aussi pouvoir suivre l'état d'avancement sur ce même dépôt en ligne. "
+    },
+    "descNewProject" : {
+        "translate-button": "FR",
+        "translated-text": "Descriptif du projet à réaliser :"
+    },
+    "delay" : {
+        "translate-button": "FR",
+        "translated-text": "Délais de livraison :"
+    },
+    "newproject" : {
+        "translate-button": "FR",
+        "translated-text": "Nouveau Projet :"
+    },
+    "confirm" : {
+        "translate-button": "FR",
+        "translated-text": "Valider"
+    },
+    "Datainchange" : {
+        "translate-button": "FR",
+        "translated-text": "Aucune donnée modifiée"
+    },
+    "Uploadlabel" : {
+        "translate-button": "FR",
+        "translated-text": "Téléchargement des fichiers : "
+    },
+    "Upload" : {
+        "translate-button": "FR",
+        "translated-text": "Téléchargement"
     }
 }
