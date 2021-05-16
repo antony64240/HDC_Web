@@ -11,33 +11,33 @@ const { checkToken , verifyToken , checkRules } = require("../controlleurs/Token
 
 
 //ANONYMOUS ROUTE
-router.post('/AddUser', SignUser.createUsers);
-router.post('/LoginUser', AuthUser.authentification);
-router.get('/verifyEmail/:token', SignUser.verifyEmail);
-router.post('/ForgotPassword', AuthUser.recoverPassword);
-router.get('/ForgotPassword', AuthUser.forgotPassword);
+router.post('/', SignUser.createUsers);
+router.post('/', AuthUser.authentification);
+router.get('//:token', SignUser.verifyEmail);
+router.post('/', AuthUser.recoverPassword);
+router.get('/', AuthUser.forgotPassword);
 
 
 //ADMINROUTE
-router.get('/Users', checkRules , SignUser.getUsers);
-router.delete('/DeletUser/:id', checkRules , SignUser.DeletOneUser);
-router.post('/createpdf', checkRules , Project.createDevis);
-router.get('/getAllProjects' , checkRules , Project.getAllProjects);
-router.get('/filesListAdmin' , checkRules , FileUser.filesListAdmin);
-router.get('/downloadAdmin' , checkRules , FileUser.downloadFilesAdmin);
+router.get('/', checkRules , SignUser.getUsers);
+router.delete('//:id', checkRules , SignUser.DeletOneUser);
+router.post('/', checkRules , Project.createDevis);
+router.get('/' , checkRules , Project.getAllProjects);
+router.get('/' , checkRules , FileUser.filesListAdmin);
+router.get('/' , checkRules , FileUser.downloadFilesAdmin);
 
 //USERROUTE
-router.get('/CheckToken',verifyToken);
-router.post('/Todo' , checkToken , Todo.addTodo);
-router.put('/Todo', checkToken , Todo.updateTodo);
-router.delete('/Todo', checkToken , Todo.deletTodo);
-router.get('/Download', checkToken, FileUser.downloadFiles);
-router.get('/ListFichier',checkToken, FileUser.filesList);
-router.delete('/ListFichier',checkToken, FileUser.deletefiles);
-router.post('/UploadFile', FileUser.UploadFile);
-router.post('/UpdateUser',checkToken, AuthUser.updateUser);
-router.post('/newProject',checkToken, Project.createProject);
-router.get('/getProject',checkToken, Project.getProjectbyUsers);
-router.get('/Project/:token', Project.getProject );
+router.get('/',verifyToken);
+router.post('/' , checkToken , Todo.addTodo);
+router.put('/', checkToken , Todo.updateTodo);
+router.delete('/', checkToken , Todo.deletTodo);
+router.get('/', checkToken, FileUser.downloadFiles);
+router.get('/',checkToken, FileUser.filesList);
+router.delete('/',checkToken, FileUser.deletefiles);
+router.post('/', FileUser.UploadFile);
+router.post('/',checkToken, AuthUser.updateUser);
+router.post('/',checkToken, Project.createProject);
+router.get('/',checkToken, Project.getProjectbyUsers);
+router.get('//:token', Project.getProject );
 
 module.exports = router;
